@@ -5,6 +5,12 @@
 [ext_resource type="PackedScene" uid="uid://don0im7ighlpy" path="res://scenes/bullet.tscn" id="3_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://ckh0q3foy2edb" path="res://scenes/exp_orb.tscn" id="4_k0juu"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0juu"]
+bg_color = Color(0.09019608, 0.07450981, 0.07058824, 0.7882353)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_71j4m"]
+bg_color = Color(0.29389402, 0.6984462, 0.37026435, 1)
+
 [node name="world" type="Node2D" unique_id=132898785]
 
 [node name="map" parent="." unique_id=1037997147 instance=ExtResource("2_rwgxs")]
@@ -24,13 +30,12 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -3.0
-offset_top = -28.0
-offset_right = -3.0
-offset_bottom = -1.0
+offset_top = -27.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 3
+theme_override_styles/background = SubResource("StyleBoxFlat_k0juu")
+theme_override_styles/fill = SubResource("StyleBoxFlat_71j4m")
 
 [node name="bullet" parent="." unique_id=1646446258 instance=ExtResource("3_4wyf3")]
 position = Vector2(468, 123)

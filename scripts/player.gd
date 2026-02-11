@@ -6,6 +6,9 @@ extends CharacterBody2D
 @export var sneak_acceleration = 750
 @export var friction = 1200
 @export var bullet: PackedScene
+@export var experience: int = 0
+@export var max_experience: int = 10
+var level: int = 1
 
 # Health system
 @export var max_health = 10
@@ -15,8 +18,13 @@ var shooting = false
 @export var shoot_interval = 0.2
 var shoot_timer = 0.0
 
+@onready var exp_bar = get_tree().root.get_node("world/HUD/exp_bar")
+
 func _ready():
 	current_health = max_health
+	if exp_bar:
+		exp_bar.max_value = max_experience
+		exp_bar.value = experience
 
 func _physics_process(delta):
 	move_tank()
@@ -86,3 +94,23 @@ func die():
 	print("Player died!")
 	$shark.flip_v = true
 	# Add death logic here
+
+func gain_exp(amount: int):
+	experience += amount
+	
+	# Update HUD
+	if exp_bar:
+		exp_bar.value = experience
+	
+	# Level up if max experience reached
+	if experience >= max_experience:
+		level_up()
+
+func level_up():
+	level += 1
+	experience = 0
+	max_experience = int(max_experience * 1.1)  # Increase exp needed by 10%
+	print("Level up! Now level ", level)
+	if exp_bar:
+		exp_bar.max_value = max_experience
+		exp_bar.value = 0
