@@ -43,7 +43,7 @@ func _process(delta):
 	if shooting:
 		shoot_timer -= delta
 		if shoot_timer <= 0:
-			shoot_turret()
+			shoot_tank()
 			shoot_timer = shoot_interval
 
 func _input(event):
@@ -53,7 +53,7 @@ func _input(event):
 	elif event.is_action_released("shoot"):
 		shooting = false
 
-func shoot_turret():
+func shoot_tank():
 	if not bullet: return
 	var bullet_instance = bullet.instantiate()
 
