@@ -5,36 +5,63 @@ extends CharacterBody2D
 @export var sneak_max_speed = 200
 @export var sneak_acceleration = 750
 @export var friction = 1200
+@export var bullet: PackedScene
+
+var shooting = false
+@export var shoot_interval = 0.2
+var shoot_timer = 0.0
 
 func _physics_process(delta):
 	move_tank()
 	move_shark(delta)
-	
+
 func move_tank():
-	$tank.look_at(get_global_mouse_position())
+	var mouse_pos = get_global_mouse_position()
+	$tank.look_at(mouse_pos)
 	
-	if $tank.global_position.x < get_global_mouse_position().x:
-		$tank.flip_v = false
-	else:
-		$tank.flip_v = true
-	
+	# Keeps the sprite upright when looking left
+	$tank.flip_v = $tank.global_position.x > mouse_pos.x
+
 func move_shark(delta):
 	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	
 	var is_sneaking = Input.is_action_pressed("sneak")
 	
-	var current_max_speed = sneak_max_speed if is_sneaking else max_speed
+	var current_max_speed = (sneak_max_speed if is_sneaking else max_speed)
+	var current_accel = (sneak_acceleration if is_sneaking else acceleration)
 	
 	var target_velocity = direction * current_max_speed
 
 	if direction != Vector2.ZERO:
-		velocity = velocity.move_toward(target_velocity, acceleration * delta)
+		velocity = velocity.move_toward(target_velocity, current_accel * delta)
+		$shark.flip_h = direction.x > 0
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
-	
-	if direction.x > 0:
-		$shark.flip_h = true
-	elif direction.x < 0:
-		$shark.flip_h = false
 
 	move_and_slide()
+
+func _process(delta):
+	if shooting:
+		shoot_timer -= delta
+		if shoot_timer <= 0:
+			shoot_turret()
+			shoot_timer = shoot_interval
+
+func _input(event):
+	if event.is_action_pressed("shoot"):
+		shooting = true
+		shoot_timer = 0.0  # Start shooting immediately
+	elif event.is_action_released("shoot"):
+		shooting = false
+
+func shoot_turret():
+	if not bullet: return
+	var bullet_instance = bullet.instantiate()
+
+	bullet_instance.global_position = $tank/Marker2D.global_position
+	bullet_instance.rotation = $tank.rotation
+	bullet_instance.add_collision_exception_with(self)
+	get_tree().root.add_child(bullet_instance)
+	bullet_instance.linear_velocity = Vector2.from_angle($tank.rotation) * 1000
+
+	if bullet_instance.has_method("set_gravity_scale"):
+		bullet_instance.set_gravity_scale(0)
