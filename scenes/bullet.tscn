@@ -18,3 +18,12 @@ region_rect = Rect2(296, 232, 88, 48)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=390786576]
 scale = Vector2(0.2, 0.2)
 shape = SubResource("RectangleShape2D_mkf8s")
+
+[node name="ShapeCast2D" type="ShapeCast2D" parent="."]
+scale = Vector2(0.2, 0.2)
+shape = SubResource("RectangleShape2D_mkf8s")
+target_position = Vector2(50, 0)
+collision_mask = 1
+collide_with_areas = false
+
+
