@@ -4,6 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://cy0sgsjpheekb" path="res://scenes/map.tscn" id="2_rwgxs"]
 [ext_resource type="PackedScene" uid="uid://don0im7ighlpy" path="res://scenes/bullet.tscn" id="3_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://ckh0q3foy2edb" path="res://scenes/exp_orb.tscn" id="4_k0juu"]
+[ext_resource type="PackedScene" uid="uid://b84g6qcjnsq3t" path="res://scenes/house.tscn" id="5_71j4m"]
+[ext_resource type="PackedScene" uid="uid://bhy4ed0b2suqo" path="res://scenes/barrel_spawner.tscn" id="6_qfnet"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0juu"]
 bg_color = Color(0.09019608, 0.07450981, 0.07058824, 0.7882353)
@@ -18,10 +20,11 @@ z_index = -1
 position = Vector2(-1, 0)
 
 [node name="player" parent="." unique_id=264071443 instance=ExtResource("1_nnsk1")]
-position = Vector2(540, 272)
+position = Vector2(530, 308)
 
 [node name="Camera2D" type="Camera2D" parent="player" unique_id=217392600]
 visible = false
+zoom = Vector2(0.6, 0.6)
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=557333534]
 
@@ -96,3 +99,65 @@ position = Vector2(446, 162)
 
 [node name="bullet10" parent="." unique_id=1526508668 instance=ExtResource("3_4wyf3")]
 position = Vector2(407, 108)
+
+[node name="House" parent="." unique_id=756055608 instance=ExtResource("5_71j4m")]
+position = Vector2(2787, 423.99997)
+rotation = -0.07679449
+
+[node name="House2" parent="." unique_id=2146214234 instance=ExtResource("5_71j4m")]
+position = Vector2(5296, 587)
+rotation = 0.24783675
+
+[node name="House3" parent="." unique_id=1859510680 instance=ExtResource("5_71j4m")]
+position = Vector2(4839, 3151.9995)
+rotation = 1.7680185
+scale = Vector2(1.5, 1.5)
+
+[node name="House4" parent="." unique_id=910908882 instance=ExtResource("5_71j4m")]
+position = Vector2(1188, 2472.0002)
+rotation = -1.9390608
+
+[node name="House5" parent="." unique_id=208265693 instance=ExtResource("5_71j4m")]
+position = Vector2(1684.0002, 4804)
+rotation = -3.0246556
+scale = Vector2(0.75, 0.75)
+
+[node name="House6" parent="." unique_id=1401560297 instance=ExtResource("5_71j4m")]
+position = Vector2(3706, 5133)
+rotation = 3.1415927
+
+[node name="BarrelSpawner" parent="." unique_id=1473339393 instance=ExtResource("6_qfnet")]
+position = Vector2(2349, 318)
+
+[node name="BarrelSpawner2" parent="." unique_id=1704740958 instance=ExtResource("6_qfnet")]
+position = Vector2(3210, 223)
+
+[node name="BarrelSpawner3" parent="." unique_id=1534801914 instance=ExtResource("6_qfnet")]
+position = Vector2(4895, 346)
+
+[node name="BarrelSpawner4" parent="." unique_id=1471844475 instance=ExtResource("6_qfnet")]
+position = Vector2(5471, 686)
+
+[node name="BarrelSpawner5" parent="." unique_id=1738072619 instance=ExtResource("6_qfnet")]
+position = Vector2(4791, 2377)
+
+[node name="BarrelSpawner6" parent="." unique_id=59218936 instance=ExtResource("6_qfnet")]
+position = Vector2(5149, 2962)
+
+[node name="BarrelSpawner7" parent="." unique_id=1683619981 instance=ExtResource("6_qfnet")]
+position = Vector2(4898, 3810)
+
+[node name="bullet11" parent="." unique_id=555084692 instance=ExtResource("3_4wyf3")]
+position = Vector2(1387, 4781)
+
+[node name="BarrelSpawner8" parent="." unique_id=964679359 instance=ExtResource("6_qfnet")]
+position = Vector2(3247, 5029)
+
+[node name="BarrelSpawner9" parent="." unique_id=564288309 instance=ExtResource("6_qfnet")]
+position = Vector2(4080, 5256)
+
+[node name="BarrelSpawner10" parent="." unique_id=1094971182 instance=ExtResource("6_qfnet")]
+position = Vector2(1283, 2809)
+
+[node name="BarrelSpawner11" parent="." unique_id=1861061648 instance=ExtResource("6_qfnet")]
+position = Vector2(1115, 2089)

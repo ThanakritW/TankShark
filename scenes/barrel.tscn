@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://cr5414vrpemsh"]
+
+[ext_resource type="Script" path="res://scripts/barrel.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b3ggqt3bc4djb" path="res://assets/barrel.png" id="1_barrel"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_barrel"]
+radius = 77.0
+height = 204.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.18, 0.18, 0.18, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fill"]
+bg_color = Color(1, 1, 0, 1)
+
+[node name="barrel" type="StaticBody2D"]
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_barrel")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, -1)
+shape = SubResource("CapsuleShape2D_barrel")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+custom_minimum_size = Vector2(150, 20)
+offset_left = -75.0
+offset_top = -130.0
+offset_right = 75.0
+offset_bottom = -110.0
+theme_override_styles/background = SubResource("StyleBoxFlat_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fill")
+show_percentage = false
