@@ -12,4 +12,4 @@ func _ready():
 func _on_body_entered(body):
 	if body.has_method("gain_exp"):
 		body.gain_exp(exp_amount)
-	queue_free()
+		queue_free()

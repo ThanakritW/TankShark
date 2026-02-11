@@ -38,10 +38,10 @@ func die() -> void:
 		var exp_orb = exp_orb_scene.instantiate()
 		exp_orb.exp_amount = randi_range(min_exp_amount, max_exp_amount)
 		
-		get_tree().current_scene.call_deferred("add_child", exp_orb)
-		
 		# Scatter them slightly
 		var scatter_offset = Vector2(randf_range(-40, 40), randf_range(-40, 40))
-		exp_orb.set_deferred("global_position", global_position + scatter_offset)
+		exp_orb.global_position = global_position + scatter_offset
+		
+		get_tree().current_scene.call_deferred("add_child", exp_orb)
 	
 	queue_free()
