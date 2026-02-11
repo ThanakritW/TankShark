@@ -2,6 +2,8 @@ extends Node2D
 
 @export var wall_scene : PackedScene = preload("res://scenes/wall.tscn")
 @export var num_walls : int = 125
+@export var mine_scene : PackedScene = preload("res://scenes/navel_mine.tscn")
+@export var num_mines : int = 30
 @export var map_size : Vector2 = Vector2(6400, 6400)
 @export var player_safe_radius : float = 400.0
 
@@ -10,6 +12,7 @@ const HOUSE_HALF_HEIGHT = 380.0 # 320 + walls + buffer
 
 func _ready() -> void:
 	spawn_random_walls()
+	spawn_random_mines()
 
 func spawn_random_walls():
 	var player_pos = _get_player_pos()
@@ -98,3 +101,31 @@ func _spawn_wall(pos: Vector2, wall_scale: Vector2):
 	wall.scale = wall_scale
 	add_child(wall)
 
+func spawn_random_mines():
+	var player_pos = _get_player_pos()
+	var houses = _find_houses()
+	
+	var mines_spawned = 0
+	var max_attempts = num_mines * 20
+	var attempts = 0
+	
+	while mines_spawned < num_mines and attempts < max_attempts:
+		attempts += 1
+		
+		# Generate random position
+		var pos = Vector2(
+			randf_range(100, map_size.x - 100),
+			randf_range(100, map_size.y - 100)
+		)
+		
+		# Mines have a fixed size, approximate collision radius
+		var mine_radius = 50.0
+		
+		if _is_valid_spawn(pos, mine_radius, player_pos, houses):
+			_spawn_mine(pos)
+			mines_spawned += 1
+
+func _spawn_mine(pos: Vector2):
+	var mine = mine_scene.instantiate()
+	mine.position = pos
+	add_child(mine)

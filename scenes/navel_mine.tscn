@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://d0m2v1y1m1n3c"]
+
+[ext_resource type="Texture2D" uid="uid://b14ht5jpvg01d" path="res://assets/navel_mine.png" id="1_mine_tex"]
+[ext_resource type="Script" uid="uid://bp6dce7e758wl" path="res://scripts/navel_mine.gd" id="2_mine_script"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_explode"]
+atlas = ExtResource("1_mine_tex")
+region = Rect2(32, 0, 32, 38)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mine"]
+atlas = ExtResource("1_mine_tex")
+region = Rect2(0, 0, 32, 38)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mine"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_explode")
+}],
+"loop": false,
+"name": &"explode",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mine")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mine"]
+radius = 16.0
+
+[node name="navel_mine" type="Area2D" unique_id=1058958663]
+scale = Vector2(3, 3)
+script = ExtResource("2_mine_script")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=41214227]
+sprite_frames = SubResource("SpriteFrames_mine")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1234225821]
+shape = SubResource("CircleShape2D_mine")
