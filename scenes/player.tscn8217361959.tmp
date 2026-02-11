@@ -38,8 +38,8 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(57, 118, 167, 57)
 
-[node name="Marker2D" type="Marker2D" parent="gun_pivot" unique_id=232817150]
-position = Vector2(291, -1)
+[node name="Marker2D" type="Marker2D" parent="gun_pivot/tank" unique_id=232817150]
+position = Vector2(91, -1)
 
 [node name="health" type="ProgressBar" parent="." unique_id=573946268]
 offset_left = -124.0

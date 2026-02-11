@@ -24,10 +24,7 @@ func _physics_process(delta):
 
 func move_tank():
 	var mouse_pos = get_global_mouse_position()
-	$tank.look_at(mouse_pos)
-	
-	# Keeps the sprite upright when looking left
-	$tank.flip_v = $tank.global_position.x > mouse_pos.x
+	$gun_pivot.look_at(mouse_pos)
 
 func move_shark(delta):
 	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
@@ -64,17 +61,17 @@ func _input(event):
 		shooting = false
 
 func shoot_tank():
-	if not bullet: return
+	if not bullet:
+		return
+
 	var bullet_instance = bullet.instantiate()
 
-	bullet_instance.global_position = $tank/Marker2D.global_position
-	bullet_instance.rotation = $tank.rotation
-	bullet_instance.add_collision_exception_with(self)
-	get_tree().root.add_child(bullet_instance)
-	bullet_instance.linear_velocity = Vector2.from_angle($tank.rotation) * 1000
+	bullet_instance.global_position = $gun_pivot/Marker2D.global_position
+	bullet_instance.direction = Vector2.from_angle($gun_pivot.global_rotation)
+	bullet_instance.rotation = bullet_instance.direction.angle()
 
-	if bullet_instance.has_method("set_gravity_scale"):
-		bullet_instance.set_gravity_scale(0)
+	get_tree().current_scene.add_child(bullet_instance)
+
 
 func take_damage(amount: int):
 	current_health -= amount
@@ -87,4 +84,5 @@ func heal(amount: int):
 
 func die():
 	print("Player died!")
+	$shark.flip_v = true
 	# Add death logic here

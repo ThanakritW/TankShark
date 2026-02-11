@@ -1,11 +1,13 @@
 [gd_scene format=3 uid="uid://don0im7ighlpy"]
 
 [ext_resource type="Texture2D" uid="uid://2nldlieefm4h" path="res://assets/bullet.png" id="1_mkf8s"]
+[ext_resource type="Script" uid="uid://begdnqgdcufns" path="res://scripts/bullet.gd" id="1_y25gk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mkf8s"]
 size = Vector2(88, 48)
 
-[node name="bullet" type="RigidBody2D" unique_id=1646446258]
+[node name="bullet" type="Area2D" unique_id=1481968050]
+script = ExtResource("1_y25gk")
 
 [node name="bullet" type="Sprite2D" parent="." unique_id=868596582]
 scale = Vector2(0.2, 0.2)

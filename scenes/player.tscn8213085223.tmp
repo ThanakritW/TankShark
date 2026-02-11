@@ -17,7 +17,14 @@ bg_color = Color(6.738305e-07, 0.72145563, 0.30494708, 1)
 [node name="player" type="CharacterBody2D" unique_id=264071443]
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_qhqgy")
+max_speed = null
+acceleration = null
+sneak_max_speed = null
+sneak_acceleration = null
+friction = null
 bullet = ExtResource("2_dqkch")
+max_health = null
+shoot_interval = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=613283130]
 shape = SubResource("RectangleShape2D_g2els")
@@ -38,8 +45,8 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(57, 118, 167, 57)
 
-[node name="Marker2D" type="Marker2D" parent="gun_pivot" unique_id=232817150]
-position = Vector2(291, -1)
+[node name="Marker2D" type="Marker2D" parent="gun_pivot/tank" unique_id=232817150]
+position = Vector2(91, -1)
 
 [node name="health" type="ProgressBar" parent="." unique_id=573946268]
 offset_left = -124.0

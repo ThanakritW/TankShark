@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://w8v7orqhl3a8" path="res://scenes/player.tscn" id="1_nnsk1"]
 [ext_resource type="PackedScene" uid="uid://cy0sgsjpheekb" path="res://scenes/map.tscn" id="2_rwgxs"]
+[ext_resource type="PackedScene" uid="uid://don0im7ighlpy" path="res://scenes/bullet.tscn" id="3_4wyf3"]
 
 [node name="world" type="Node2D" unique_id=132898785]
 
@@ -14,3 +15,29 @@ position = Vector2(540, 272)
 [node name="Camera2D" type="Camera2D" parent="player" unique_id=217392600]
 visible = false
 zoom = Vector2(0.5, 0.5)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=557333534]
+
+[node name="exp_bar" type="ProgressBar" parent="HUD" unique_id=1507459750]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -3.0
+offset_top = -28.0
+offset_right = -3.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+
+[node name="bullet" parent="." unique_id=1646446258 instance=ExtResource("3_4wyf3")]
+position = Vector2(468, 123)
+
+[node name="bullet2" parent="." unique_id=992968553 instance=ExtResource("3_4wyf3")]
+position = Vector2(702, 150)
+gravity_scale = 0.1
+
+[node name="bullet3" parent="." unique_id=386748400 instance=ExtResource("3_4wyf3")]
+position = Vector2(337, 217)
+gravity_scale = 0.1
