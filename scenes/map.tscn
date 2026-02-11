@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://cy0sgsjpheekb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hrmi8"]
+size = Vector2(3000, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4xfga"]
+size = Vector2(10, 3000)
+
+[node name="map" type="Node2D" unique_id=1037997147]
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=951605110]
+offset_right = 3000.0
+offset_bottom = 3000.0
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=23102489]
+
+[node name="top_collider" type="CollisionShape2D" parent="StaticBody2D" unique_id=1247335981]
+position = Vector2(1500, 0)
+shape = SubResource("RectangleShape2D_hrmi8")
+
+[node name="bottom_collider" type="CollisionShape2D" parent="StaticBody2D" unique_id=621483581]
+position = Vector2(1500, 3000)
+shape = SubResource("RectangleShape2D_hrmi8")
+
+[node name="left_collider" type="CollisionShape2D" parent="StaticBody2D" unique_id=2019598500]
+position = Vector2(0, 1500)
+shape = SubResource("RectangleShape2D_4xfga")
+
+[node name="right_collider" type="CollisionShape2D" parent="StaticBody2D" unique_id=837397851]
+position = Vector2(3000, 1500)
+shape = SubResource("RectangleShape2D_4xfga")
