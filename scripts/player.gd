@@ -68,6 +68,8 @@ func _process(delta):
 		$health.value = current_health
 
 func _input(event):
+	if is_dead: return
+	
 	if event.is_action_pressed("shoot"):
 		shooting = true
 		shoot_timer = 0.0  # Start shooting immediately
@@ -100,6 +102,7 @@ func heal(amount: int):
 func die():
 	print("Player died!")
 	is_dead = true
+	shooting = false
 	$shark.flip_v = true
 	# Add death logic here
 
