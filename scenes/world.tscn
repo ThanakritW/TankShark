@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cy0sgsjpheekb" path="res://scenes/map.tscn" id="2_rwgxs"]
 [ext_resource type="PackedScene" uid="uid://don0im7ighlpy" path="res://scenes/bullet.tscn" id="3_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://ckh0q3foy2edb" path="res://scenes/exp_orb.tscn" id="4_k0juu"]
+[ext_resource type="PackedScene" uid="uid://b84g6qcjnsq3t" path="res://scenes/house.tscn" id="5_71j4m"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0juu"]
 bg_color = Color(0.09019608, 0.07450981, 0.07058824, 0.7882353)
@@ -96,3 +97,29 @@ position = Vector2(446, 162)
 
 [node name="bullet10" parent="." unique_id=1526508668 instance=ExtResource("3_4wyf3")]
 position = Vector2(407, 108)
+
+[node name="House" parent="." unique_id=756055608 instance=ExtResource("5_71j4m")]
+position = Vector2(2787, 423.99997)
+rotation = -0.07679449
+
+[node name="House2" parent="." unique_id=2146214234 instance=ExtResource("5_71j4m")]
+position = Vector2(5296, 587)
+rotation = 0.24783675
+
+[node name="House3" parent="." unique_id=1859510680 instance=ExtResource("5_71j4m")]
+position = Vector2(4839, 3151.9995)
+rotation = 1.7680185
+scale = Vector2(1.5, 1.5)
+
+[node name="House4" parent="." unique_id=910908882 instance=ExtResource("5_71j4m")]
+position = Vector2(1188, 2472.0002)
+rotation = -1.9390608
+
+[node name="House5" parent="." unique_id=208265693 instance=ExtResource("5_71j4m")]
+position = Vector2(1684.0002, 4804)
+rotation = -3.0246556
+scale = Vector2(0.75, 0.75)
+
+[node name="House6" parent="." unique_id=1401560297 instance=ExtResource("5_71j4m")]
+position = Vector2(3706, 5133)
+rotation = 3.1415927

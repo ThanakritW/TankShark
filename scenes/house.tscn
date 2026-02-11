@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://b84g6qcjnsq3t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_horizontal_large"]
+size = Vector2(1296, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vertical_large"]
+size = Vector2(8, 656)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door_segment_shorter"]
+size = Vector2(384, 8)
+
+[node name="House" type="Node2D"]
+
+[node name="Floor" type="ColorRect" parent="."]
+z_index = -1
+offset_left = -640.0
+offset_top = -320.0
+offset_right = 640.0
+offset_bottom = 320.0
+color = Color(0.211765, 0.239216, 0.290196, 1)
+metadata/_edit_lock_ = true
+
+[node name="Wall_Top" type="StaticBody2D" parent="."]
+position = Vector2(0, -324)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall_Top"]
+shape = SubResource("RectangleShape2D_horizontal_large")
+
+[node name="ColorRect" type="ColorRect" parent="Wall_Top"]
+offset_left = -648.0
+offset_top = -4.0
+offset_right = 648.0
+offset_bottom = 4.0
+color = Color(0.439216, 0.47451, 0.541176, 1)
+
+[node name="Wall_Left" type="StaticBody2D" parent="."]
+position = Vector2(-644, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall_Left"]
+shape = SubResource("RectangleShape2D_vertical_large")
+
+[node name="ColorRect" type="ColorRect" parent="Wall_Left"]
+offset_left = -4.0
+offset_top = -328.0
+offset_right = 4.0
+offset_bottom = 328.0
+color = Color(0.439216, 0.47451, 0.541176, 1)
+
+[node name="Wall_Right" type="StaticBody2D" parent="."]
+position = Vector2(644, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall_Right"]
+shape = SubResource("RectangleShape2D_vertical_large")
+
+[node name="ColorRect" type="ColorRect" parent="Wall_Right"]
+offset_left = -4.0
+offset_top = -328.0
+offset_right = 4.0
+offset_bottom = 328.0
+color = Color(0.439216, 0.47451, 0.541176, 1)
+
+[node name="Wall_Bottom_Left" type="StaticBody2D" parent="."]
+position = Vector2(-448, 324)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall_Bottom_Left"]
+shape = SubResource("RectangleShape2D_door_segment_shorter")
+
+[node name="ColorRect" type="ColorRect" parent="Wall_Bottom_Left"]
+offset_left = -192.0
+offset_top = -4.0
+offset_right = 192.0
+offset_bottom = 4.0
+color = Color(0.439216, 0.47451, 0.541176, 1)
+
+[node name="Wall_Bottom_Right" type="StaticBody2D" parent="."]
+position = Vector2(448, 324)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall_Bottom_Right"]
+shape = SubResource("RectangleShape2D_door_segment_shorter")
+
+[node name="ColorRect" type="ColorRect" parent="Wall_Bottom_Right"]
+offset_left = -192.0
+offset_top = -4.0
+offset_right = 192.0
+offset_bottom = 4.0
+color = Color(0.439216, 0.47451, 0.541176, 1)
