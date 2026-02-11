@@ -50,7 +50,7 @@ func _get_player_pos() -> Vector2:
 func _find_houses() -> Array:
 	var houses = []
 	var check_nodes = get_children()
-	# Check siblings in case houses are in the world scene, not map scene
+	# Check siblings in case houses are in the world scene
 	if get_parent():
 		check_nodes.append_array(get_parent().get_children())
 		
@@ -76,7 +76,6 @@ func _is_valid_spawn(pos: Vector2, wall_radius_buffer: float, player_pos: Vector
 			continue # Far away, definitely safe
 			
 		# Detailed Box Check
-		# Transform world position 'pos' into house's local space
 		var local_pos = house.to_local(pos)
 		
 		var buffer = wall_radius_buffer / h_scale 

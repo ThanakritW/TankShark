@@ -15,7 +15,7 @@ func _physics_process(delta):
 	shape_cast.force_shapecast_update()
 	
 	if shape_cast.is_colliding():
-		# We hit something
+		# Hit something
 		var body = shape_cast.get_collider(0)
 		
 		# Don't hit the shooter
