@@ -13,6 +13,7 @@ var level: int = 1
 # Health system
 @export var max_health = 10
 var current_health = 10
+var is_dead = false
 
 var shooting = false
 @export var shoot_interval = 0.2
@@ -35,6 +36,11 @@ func move_tank():
 	$gun_pivot.look_at(mouse_pos)
 
 func move_shark(delta):
+	if is_dead:
+		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
+		move_and_slide()
+		return
+		
 	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var is_sneaking = Input.is_action_pressed("sneak")
 	
@@ -92,6 +98,7 @@ func heal(amount: int):
 
 func die():
 	print("Player died!")
+	is_dead = true
 	$shark.flip_v = true
 	# Add death logic here
 
