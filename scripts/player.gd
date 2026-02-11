@@ -7,9 +7,16 @@ extends CharacterBody2D
 @export var friction = 1200
 @export var bullet: PackedScene
 
+# Health system
+@export var max_health = 10
+var current_health = 10
+
 var shooting = false
 @export var shoot_interval = 0.2
 var shoot_timer = 0.0
+
+func _ready():
+	current_health = max_health
 
 func _physics_process(delta):
 	move_tank()
@@ -45,6 +52,9 @@ func _process(delta):
 		if shoot_timer <= 0:
 			shoot_tank()
 			shoot_timer = shoot_interval
+	
+	if has_node("health"):
+		$health.value = current_health
 
 func _input(event):
 	if event.is_action_pressed("shoot"):
@@ -65,3 +75,16 @@ func shoot_tank():
 
 	if bullet_instance.has_method("set_gravity_scale"):
 		bullet_instance.set_gravity_scale(0)
+
+func take_damage(amount: int):
+	current_health -= amount
+	if current_health <= 0:
+		current_health = 0
+		die()
+
+func heal(amount: int):
+	current_health = min(current_health + amount, max_health)
+
+func die():
+	print("Player died!")
+	# Add death logic here

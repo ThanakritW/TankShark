@@ -8,6 +8,12 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
 size = Vector2(370, 216)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dqkch"]
+bg_color = Color(1, 0.33405825, 0.34729666, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qlg0r"]
+bg_color = Color(6.738305e-07, 0.72145563, 0.30494708, 1)
+
 [node name="player" type="CharacterBody2D" unique_id=264071443]
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_qhqgy")
@@ -16,15 +22,30 @@ bullet = ExtResource("2_dqkch")
 [node name="shark" type="Sprite2D" parent="." unique_id=210942107]
 texture = ExtResource("1_3vyb7")
 flip_h = true
+region_enabled = true
+region_rect = Rect2(64, 141, 372, 218)
 
 [node name="tank" type="Sprite2D" parent="." unique_id=1673473842]
 z_index = 1
 position = Vector2(-3, 53)
 texture = ExtResource("3_dqkch")
 flip_h = true
+region_enabled = true
+region_rect = Rect2(57, 118, 167, 57)
 
 [node name="Marker2D" type="Marker2D" parent="tank" unique_id=232817150]
 position = Vector2(91, -1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=613283130]
 shape = SubResource("RectangleShape2D_g2els")
+
+[node name="health" type="ProgressBar" parent="." unique_id=573946268]
+offset_left = -124.0
+offset_top = 118.0
+offset_right = 126.0
+offset_bottom = 145.0
+theme_override_styles/background = SubResource("StyleBoxFlat_dqkch")
+theme_override_styles/fill = SubResource("StyleBoxFlat_qlg0r")
+max_value = 10.0
+step = 1.0
+show_percentage = false
