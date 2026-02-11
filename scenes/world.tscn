@@ -20,7 +20,7 @@ z_index = -1
 position = Vector2(-1, 0)
 
 [node name="player" parent="." unique_id=264071443 instance=ExtResource("1_nnsk1")]
-position = Vector2(540, 272)
+position = Vector2(530, 308)
 
 [node name="Camera2D" type="Camera2D" parent="player" unique_id=217392600]
 visible = false

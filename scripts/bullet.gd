@@ -4,6 +4,7 @@ extends Area2D
 @export var damage := 1
 
 var direction: Vector2 = Vector2.RIGHT
+var owner_shooter = null
 
 @onready var shape_cast = $ShapeCast2D
 
@@ -16,6 +17,11 @@ func _physics_process(delta):
 	if shape_cast.is_colliding():
 		# We hit something
 		var body = shape_cast.get_collider(0)
+		
+		# Don't hit the shooter
+		if body == owner_shooter:
+			global_position += velocity
+			return
 		
 		if body.has_method("take_damage"):
 			body.take_damage(damage)

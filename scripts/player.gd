@@ -83,6 +83,7 @@ func shoot_tank():
 	bullet_instance.global_position = $gun_pivot/Marker2D.global_position
 	bullet_instance.direction = Vector2.from_angle($gun_pivot.global_rotation)
 	bullet_instance.rotation = bullet_instance.direction.angle()
+	bullet_instance.owner_shooter = self
 
 	get_tree().current_scene.add_child(bullet_instance)
 
