@@ -1,38 +1,40 @@
-[gd_scene load_steps=5 format=3 uid="uid://cy0sgsjpheekb"]
+[gd_scene load_steps=6 format=3 uid="uid://cy0sgsjpheekb"]
 
 [ext_resource type="Texture2D" uid="uid://background_id_placeholder" path="res://assets/background.jpg" id="1_bg"]
-[ext_resource type="Script" path="res://scripts/background.gd" id="2_script"]
+[ext_resource type="Script" path="res://scripts/map.gd" id="2_script"]
+[ext_resource type="Script" path="res://scripts/background.gd" id="3_script"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hrmi8"]
-size = Vector2(3000, 10)
+size = Vector2(6400, 10)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4xfga"]
-size = Vector2(10, 3000)
+size = Vector2(10, 6400)
 
 [node name="map" type="Node2D" unique_id=1037997147]
+script = ExtResource("2_script")
 
 [node name="background" type="Sprite2D" parent="." unique_id=951605110]
 texture_repeat = 2
 texture = ExtResource("1_bg")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 3000, 3000)
-script = ExtResource("2_script")
+region_rect = Rect2(0, 0, 6400, 6400)
+script = ExtResource("3_script")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=23102489]
 
 [node name="top_collider" type="CollisionShape2D" parent="StaticBody2D" unique_id=1247335981]
-position = Vector2(1500, 0)
+position = Vector2(3200, 0)
 shape = SubResource("RectangleShape2D_hrmi8")
 
 [node name="bottom_collider" type="CollisionShape2D" parent="StaticBody2D" unique_id=621483581]
-position = Vector2(1500, 3000)
+position = Vector2(3200, 6400)
 shape = SubResource("RectangleShape2D_hrmi8")
 
 [node name="left_collider" type="CollisionShape2D" parent="StaticBody2D" unique_id=2019598500]
-position = Vector2(0, 1500)
+position = Vector2(0, 3200)
 shape = SubResource("RectangleShape2D_4xfga")
 
 [node name="right_collider" type="CollisionShape2D" parent="StaticBody2D" unique_id=837397851]
-position = Vector2(3000, 1500)
+position = Vector2(6400, 3200)
 shape = SubResource("RectangleShape2D_4xfga")
