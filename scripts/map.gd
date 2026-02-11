@@ -5,7 +5,6 @@ extends Node2D
 @export var map_size : Vector2 = Vector2(6400, 6400)
 @export var player_safe_radius : float = 400.0
 
-# House dimensions based on house.tscn (approx 1300x650)
 const HOUSE_HALF_WIDTH = 700.0  # 640 + walls + buffer
 const HOUSE_HALF_HEIGHT = 380.0 # 320 + walls + buffer
 
