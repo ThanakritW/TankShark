@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cy0sgsjpheekb"]
+[gd_scene load_steps=5 format=3 uid="uid://cy0sgsjpheekb"]
 
 [ext_resource type="Texture2D" uid="uid://background_id_placeholder" path="res://assets/background.jpg" id="1_bg"]
+[ext_resource type="Script" path="res://scripts/background.gd" id="2_script"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hrmi8"]
 size = Vector2(3000, 10)
@@ -16,6 +17,7 @@ texture = ExtResource("1_bg")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 3000, 3000)
+script = ExtResource("2_script")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=23102489]
 
