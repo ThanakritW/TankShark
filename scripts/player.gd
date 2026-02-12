@@ -10,6 +10,15 @@ extends CharacterBody2D
 @export var max_experience: int = 10
 var level: int = 1
 
+# Class System
+enum TankClass { BASIC, TWIN, FLANK, SNIPER }
+var current_class = TankClass.BASIC
+@onready var gun1 = $gun_pivot1
+@onready var gun2 = $gun_pivot2
+@onready var light = $gun_pivot1/PointLight2D
+var bullet_speed_multiplier = 1.0
+var damage_multiplier = 1.0
+
 # Health system
 @export var max_health = 10
 var current_health = 10
@@ -22,18 +31,30 @@ var shoot_timer = 0.0
 @onready var exp_bar = get_tree().root.get_node("world/HUD/exp_bar")
 
 func _ready():
+	print("LIGHT NODE IS: ", light)
 	current_health = max_health
 	if exp_bar:
 		exp_bar.max_value = max_experience
 		exp_bar.value = experience
+	update_gun_visuals()
 
 func _physics_process(delta):
 	move_tank()
 	move_shark(delta)
+	
+	if Input.is_key_pressed(KEY_1): change_class(TankClass.BASIC)
+	if Input.is_key_pressed(KEY_2): change_class(TankClass.TWIN)
+	if Input.is_key_pressed(KEY_3): change_class(TankClass.FLANK)
+	if Input.is_key_pressed(KEY_4): change_class(TankClass.SNIPER)
 
 func move_tank():
 	var mouse_pos = get_global_mouse_position()
-	$gun_pivot.look_at(mouse_pos)
+	gun1.look_at(mouse_pos)
+	
+	if current_class == TankClass.FLANK:
+		gun2.rotation = gun1.rotation + PI
+	else:
+		gun2.look_at(mouse_pos)
 
 func move_shark(delta):
 	if is_dead:
@@ -72,23 +93,67 @@ func _input(event):
 	
 	if event.is_action_pressed("shoot"):
 		shooting = true
-		shoot_timer = 0.0  # Start shooting immediately
+		shoot_timer = 0.0
 	elif event.is_action_released("shoot"):
 		shooting = false
 
+func change_class(new_class):
+	current_class = new_class
+	update_gun_visuals()
+
+func update_gun_visuals():
+	gun1.position = Vector2.ZERO
+	gun2.position = Vector2.ZERO
+	gun2.visible = false
+	bullet_speed_multiplier = 1.0
+	damage_multiplier = 1.0
+	
+	if light:
+		light.texture_scale = 1.0
+		light.energy = 1.0
+		light.position = Vector2(750, 0)
+
+	match current_class:
+		TankClass.BASIC:
+			shoot_interval = 0.5
+		TankClass.TWIN:
+			shoot_interval = 0.2
+			gun2.visible = true
+			gun1.position = Vector2(0, -15)
+			gun2.position = Vector2(0, 15)
+		TankClass.FLANK:
+			shoot_interval = 0.5
+			gun2.visible = true
+		TankClass.SNIPER:
+			shoot_interval = 1.2
+			bullet_speed_multiplier = 2.0
+			damage_multiplier = 3.0
+			if light:
+				light.texture_scale = 2.5
+				light.energy = 1.5
+				light.position = Vector2(1600, 10)
+
 func shoot_tank():
-	if not bullet:
-		return
+	if not bullet: return
 
+	create_bullet(gun1)
+
+	if current_class == TankClass.TWIN or current_class == TankClass.FLANK:
+		create_bullet(gun2)
+
+func create_bullet(pivot_node):
 	var bullet_instance = bullet.instantiate()
+	var marker = pivot_node.get_node("Marker2D")
 
-	bullet_instance.global_position = $gun_pivot/Marker2D.global_position
-	bullet_instance.direction = Vector2.from_angle($gun_pivot.global_rotation)
+	bullet_instance.global_position = marker.global_position
+	bullet_instance.direction = Vector2.from_angle(pivot_node.global_rotation)
 	bullet_instance.rotation = bullet_instance.direction.angle()
 	bullet_instance.owner_shooter = self
+	
+	if "speed" in bullet_instance:
+		bullet_instance.speed *= bullet_speed_multiplier
 
 	get_tree().current_scene.add_child(bullet_instance)
-
 
 func take_damage(amount: int):
 	current_health -= amount
@@ -104,23 +169,20 @@ func die():
 	is_dead = true
 	shooting = false
 	$shark.flip_v = true
-	# Add death logic here
 
 func gain_exp(amount: int):
 	experience += amount
 	
-	# Update HUD
 	if exp_bar:
 		exp_bar.value = experience
 	
-	# Level up if max experience reached
 	if experience >= max_experience:
 		level_up()
 
 func level_up():
 	level += 1
 	experience = 0
-	max_experience = int(max_experience * 1.1)  # Increase exp needed by 10%
+	max_experience = int(max_experience * 1.1)
 	print("Level up! Now level ", level)
 	if exp_bar:
 		exp_bar.max_value = max_experience
