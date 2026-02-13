@@ -40,10 +40,9 @@ region_enabled = true
 region_rect = Rect2(57, 118, 167, 57)
 
 [node name="Marker2D" type="Marker2D" parent="gun_pivot1" unique_id=232817150]
-position = Vector2(200, -1)
+position = Vector2(185, -1)
 
 [node name="PointLight2D" type="PointLight2D" parent="gun_pivot1" unique_id=536195904]
-position = Vector2(665.32404, 6.622078)
 rotation = 4.712389
 scale = Vector2(3.294925, 4.402765)
 shadow_enabled = true

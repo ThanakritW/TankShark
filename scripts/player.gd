@@ -10,6 +10,10 @@ extends CharacterBody2D
 @export var max_experience: int = 10
 var level: int = 1
 
+# Camera Syetem
+@onready var cam = get_node_or_null("Camera2D")
+var target_zoom = Vector2(0.6,0.6)
+
 # Class System
 enum TankClass { BASIC, TWIN, FLANK, SNIPER }
 var current_class = TankClass.BASIC
@@ -79,6 +83,8 @@ func move_shark(delta):
 	move_and_slide()
 
 func _process(delta):
+	if cam:
+		cam.zoom = cam.zoom.lerp(target_zoom, 5 * delta)
 	if shooting:
 		shoot_timer -= delta
 		if shoot_timer <= 0:
@@ -93,7 +99,7 @@ func _input(event):
 	
 	if event.is_action_pressed("shoot"):
 		shooting = true
-		shoot_timer = 0.0
+		#shoot_timer = 0.0
 	elif event.is_action_released("shoot"):
 		shooting = false
 
@@ -111,27 +117,38 @@ func update_gun_visuals():
 	if light:
 		light.texture_scale = 1.0
 		light.energy = 1.0
-		light.position = Vector2(750, 0)
+		var marker = gun1.get_node("Marker2D")
+		light.position = marker.position
+		var tex_size = light.texture.get_size()
+		light.offset = Vector2(0, tex_size.y/2)
 
 	match current_class:
 		TankClass.BASIC:
+			target_zoom = Vector2(0.6,0.6)
 			shoot_interval = 0.5
 		TankClass.TWIN:
+			target_zoom = Vector2(0.6,0.6)
 			shoot_interval = 0.2
 			gun2.visible = true
 			gun1.position = Vector2(0, -15)
 			gun2.position = Vector2(0, 15)
 		TankClass.FLANK:
+			target_zoom = Vector2(0.6,0.6)
 			shoot_interval = 0.5
 			gun2.visible = true
 		TankClass.SNIPER:
 			shoot_interval = 1.2
 			bullet_speed_multiplier = 2.0
 			damage_multiplier = 3.0
+			target_zoom = Vector2(0.4,0.4)
 			if light:
 				light.texture_scale = 2.5
 				light.energy = 1.5
-				light.position = Vector2(1600, 10)
+				var marker = gun1.get_node("Marker2D")
+				light.position = marker.position
+				var tex_size = light.texture.get_size()
+				light.offset = Vector2(0, tex_size.y/2*2.5)
+				
 
 func shoot_tank():
 	if not bullet: return
