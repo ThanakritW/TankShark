@@ -128,6 +128,10 @@ func update_gun_visuals():
 			target_zoom = Vector2(0.6,0.6)
 			shoot_interval = 0.5
 		TankClass.TWIN:
+			var marker2 = gun2.get_node("Marker2D")
+			light_flank.position = marker2.position
+			var tex_size = light.texture.get_size()
+			light_flank.offset = Vector2(0, tex_size.y/2)
 			target_zoom = Vector2(0.6,0.6)
 			shoot_interval = 0.2
 			gun2.visible = true
