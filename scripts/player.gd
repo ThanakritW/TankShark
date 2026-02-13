@@ -20,6 +20,7 @@ var current_class = TankClass.BASIC
 @onready var gun1 = $gun_pivot1
 @onready var gun2 = $gun_pivot2
 @onready var light = $gun_pivot1/PointLight2D
+@onready var light_flank = $gun_pivot2/PointLight2D
 var bullet_speed_multiplier = 1.0
 var damage_multiplier = 1.0
 
@@ -133,6 +134,10 @@ func update_gun_visuals():
 			gun1.position = Vector2(0, -15)
 			gun2.position = Vector2(0, 15)
 		TankClass.FLANK:
+			var marker2 = gun2.get_node("Marker2D")
+			light_flank.position = marker2.position
+			var tex_size = light.texture.get_size()
+			light_flank.offset = Vector2(0, tex_size.y/2)
 			target_zoom = Vector2(0.6,0.6)
 			shoot_interval = 0.5
 			gun2.visible = true
