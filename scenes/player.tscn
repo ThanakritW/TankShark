@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://w8v7orqhl3a8"]
+[gd_scene load_steps=7 format=3 uid="uid://w8v7orqhl3a8"]
 
 [ext_resource type="Texture2D" uid="uid://cejp8dvj8jd0n" path="res://assets/shark.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://c4oel2ny4rhjr" path="res://scripts/player.gd" id="1_qhqgy"]
@@ -13,32 +13,6 @@ bg_color = Color(1, 0.33405825, 0.34729666, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qlg0r"]
 bg_color = Color(6.738305e-07, 0.72145563, 0.30494708, 1)
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mp"]
-properties/0/path = NodePath(".:position")
-properties/0/spawn = true
-properties/0/replication_mode = 1
-properties/1/path = NodePath(".:velocity")
-properties/1/spawn = true
-properties/1/replication_mode = 1
-properties/2/path = NodePath("gun_pivot1:rotation")
-properties/2/spawn = true
-properties/2/replication_mode = 1
-properties/3/path = NodePath("gun_pivot2:rotation")
-properties/3/spawn = true
-properties/3/replication_mode = 1
-properties/4/path = NodePath("gun_pivot2:visible")
-properties/4/spawn = true
-properties/4/replication_mode = 2
-properties/5/path = NodePath(".:current_class")
-properties/5/spawn = true
-properties/5/replication_mode = 2
-properties/6/path = NodePath("shark:flip_h")
-properties/6/spawn = true
-properties/6/replication_mode = 2
-properties/7/path = NodePath("shark:flip_v")
-properties/7/spawn = true
-properties/7/replication_mode = 2
 
 [node name="player" type="CharacterBody2D"]
 scale = Vector2(0.5, 0.5)
@@ -107,6 +81,3 @@ metadata/_edit_use_anchors_ = true
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.6, 0.6)
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_mp")
-replication_interval = 0.05

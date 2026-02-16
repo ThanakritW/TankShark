@@ -125,6 +125,23 @@ func _physics_process(delta):
 	if is_multiplayer_authority():
 		move_tank()
 		move_shark(delta)
+		# Sync position/rotation to all other peers
+		var gun1_rot = gun1.rotation if gun1 else 0.0
+		var gun2_rot = gun2.rotation if gun2 else 0.0
+		var gun2_vis = gun2.visible if gun2 else false
+		_sync_movement.rpc(position, velocity, gun1_rot, gun2_rot, gun2_vis, $shark.flip_h, $shark.flip_v)
+
+@rpc("any_peer", "unreliable")
+func _sync_movement(pos: Vector2, vel: Vector2, gun1_rot: float, gun2_rot: float, gun2_vis: bool, flip_h: bool, flip_v: bool):
+	if is_multiplayer_authority(): return
+	position = pos
+	velocity = vel
+	if gun1: gun1.rotation = gun1_rot
+	if gun2:
+		gun2.rotation = gun2_rot
+		gun2.visible = gun2_vis
+	$shark.flip_h = flip_h
+	$shark.flip_v = flip_v
 
 func _process(delta):
 	if is_multiplayer_authority():
