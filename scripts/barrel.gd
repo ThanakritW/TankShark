@@ -31,13 +31,16 @@ func take_damage(amount: int) -> void:
 		else:
 			queue_free()
 
+static var orb_counter: int = 0
+
 func _get_orb_data() -> Array:
 	var orbs = []
 	var num_orbs = randi_range(min_exp_drop, max_exp_drop)
 	for i in range(num_orbs):
 		var exp_amt = randi_range(min_exp_amount, max_exp_amount)
 		var scatter_offset = Vector2(randf_range(-40, 40), randf_range(-40, 40))
-		orbs.append({"exp": exp_amt, "pos": global_position + scatter_offset})
+		orb_counter += 1
+		orbs.append({"exp": exp_amt, "pos": global_position + scatter_offset, "name": "orb_" + str(orb_counter)})
 	return orbs
 
 func apply_damage_visual(hp: int):
@@ -53,5 +56,6 @@ func die_and_spawn_orbs(orbs: Array):
 		var exp_orb = exp_orb_scene.instantiate()
 		exp_orb.exp_amount = orb_data["exp"]
 		exp_orb.global_position = orb_data["pos"]
+		exp_orb.name = orb_data["name"]
 		get_tree().current_scene.call_deferred("add_child", exp_orb)
 	queue_free()

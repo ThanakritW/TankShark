@@ -94,3 +94,12 @@ func _sync_barrel_die_rpc(barrel_path_str: String, orbs: Array):
 	var barrel = get_node_or_null(barrel_path_str)
 	if barrel and barrel.has_method("die_and_spawn_orbs"):
 		barrel.die_and_spawn_orbs(orbs)
+
+func sync_remove_orb(orb_path: NodePath):
+	_sync_remove_orb_rpc.rpc(str(orb_path))
+
+@rpc("authority", "call_local", "reliable")
+func _sync_remove_orb_rpc(orb_path_str: String):
+	var orb = get_node_or_null(orb_path_str)
+	if orb:
+		orb.queue_free()

@@ -12,8 +12,8 @@ func _on_body_entered(body):
 	if not multiplayer.is_server(): return
 	if body.has_method("gain_exp"):
 		body.gain_exp(exp_amount)
-		_remove_orb.rpc()
-
-@rpc("authority", "call_local", "reliable")
-func _remove_orb():
-	queue_free()
+		var world = get_tree().current_scene
+		if world and world.has_method("sync_remove_orb"):
+			world.sync_remove_orb(get_path())
+		else:
+			queue_free()
