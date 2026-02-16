@@ -125,8 +125,6 @@ func _physics_process(delta):
 	if is_multiplayer_authority():
 		move_tank()
 		move_shark(delta)
-	else:
-		move_and_slide()
 
 func _process(delta):
 	if is_multiplayer_authority():
@@ -161,7 +159,7 @@ func _request_class_swap_server(class_id: String):
 	if class_id not in ["basic", "twin", "flank", "sniper"]: return
 	_apply_class_all.rpc(class_id)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func _apply_class_all(class_id: String):
 	apply_class(class_id)
 	_update_light_visibility()
@@ -203,7 +201,7 @@ func _request_shoot():
 	if sender != get_multiplayer_authority(): return
 	_do_shoot.rpc()
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func _do_shoot():
 	_create_bullet_local(gun1)
 	if gun2 and gun2.visible:
