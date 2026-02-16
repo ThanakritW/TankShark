@@ -1,11 +1,9 @@
 [gd_scene format=3 uid="uid://0cqcfqjaukxl"]
 
-[ext_resource type="PackedScene" uid="uid://w8v7orqhl3a8" path="res://scenes/player.tscn" id="1_nnsk1"]
 [ext_resource type="PackedScene" uid="uid://cy0sgsjpheekb" path="res://scenes/map.tscn" id="2_rwgxs"]
-[ext_resource type="PackedScene" uid="uid://don0im7ighlpy" path="res://scenes/bullet.tscn" id="3_4wyf3"]
-[ext_resource type="PackedScene" uid="uid://ckh0q3foy2edb" path="res://scenes/exp_orb.tscn" id="4_k0juu"]
 [ext_resource type="PackedScene" uid="uid://b84g6qcjnsq3t" path="res://scenes/house.tscn" id="5_71j4m"]
 [ext_resource type="PackedScene" uid="uid://bhy4ed0b2suqo" path="res://scenes/barrel_spawner.tscn" id="6_qfnet"]
+[ext_resource type="Script" uid="uid://b56g0p70mmcjt" path="res://scripts/world.gd" id="7_world"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0juu"]
 bg_color = Color(0.09019608, 0.07450981, 0.07058824, 0.7882353)
@@ -13,22 +11,18 @@ bg_color = Color(0.09019608, 0.07450981, 0.07058824, 0.7882353)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_71j4m"]
 bg_color = Color(0.29389402, 0.6984462, 0.37026435, 1)
 
-[node name="world" type="Node2D" unique_id=132898785]
+[node name="world" type="Node2D" unique_id=223851610]
+script = ExtResource("7_world")
 
-[node name="map" parent="." unique_id=1037997147 instance=ExtResource("2_rwgxs")]
+[node name="map" parent="." unique_id=580799621 instance=ExtResource("2_rwgxs")]
 z_index = -1
 position = Vector2(-1, 0)
 
-[node name="player" parent="." unique_id=264071443 instance=ExtResource("1_nnsk1")]
-position = Vector2(530, 308)
+[node name="Players" type="Node2D" parent="." unique_id=1120864094]
 
-[node name="Camera2D" type="Camera2D" parent="player" unique_id=217392600]
-visible = false
-zoom = Vector2(0.6, 0.6)
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1807019043]
 
-[node name="HUD" type="CanvasLayer" parent="." unique_id=557333534]
-
-[node name="exp_bar" type="ProgressBar" parent="HUD" unique_id=1507459750]
+[node name="exp_bar" type="ProgressBar" parent="HUD" unique_id=906937505]
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -40,127 +34,64 @@ size_flags_horizontal = 3
 theme_override_styles/background = SubResource("StyleBoxFlat_k0juu")
 theme_override_styles/fill = SubResource("StyleBoxFlat_71j4m")
 
-[node name="bullet" parent="." unique_id=1646446258 instance=ExtResource("3_4wyf3")]
-position = Vector2(468, 123)
-
-[node name="bullet2" parent="." unique_id=992968553 instance=ExtResource("3_4wyf3")]
-position = Vector2(702, 150)
-
-[node name="bullet3" parent="." unique_id=386748400 instance=ExtResource("3_4wyf3")]
-position = Vector2(337, 217)
-
-[node name="exp_orb" parent="." unique_id=1685690777 instance=ExtResource("4_k0juu")]
-position = Vector2(830, 303)
-
-[node name="exp_orb2" parent="." unique_id=1424038960 instance=ExtResource("4_k0juu")]
-position = Vector2(932, 329)
-
-[node name="exp_orb3" parent="." unique_id=1032011679 instance=ExtResource("4_k0juu")]
-position = Vector2(845, 349)
-
-[node name="exp_orb4" parent="." unique_id=620261467 instance=ExtResource("4_k0juu")]
-position = Vector2(940, 293)
-
-[node name="exp_orb5" parent="." unique_id=407337105 instance=ExtResource("4_k0juu")]
-position = Vector2(891, 290)
-
-[node name="exp_orb6" parent="." unique_id=335021863 instance=ExtResource("4_k0juu")]
-position = Vector2(891, 348)
-
-[node name="exp_orb7" parent="." unique_id=549634610 instance=ExtResource("4_k0juu")]
-position = Vector2(792, 349)
-
-[node name="exp_orb8" parent="." unique_id=1451578086 instance=ExtResource("4_k0juu")]
-position = Vector2(849, 389)
-
-[node name="exp_orb9" parent="." unique_id=397872000 instance=ExtResource("4_k0juu")]
-position = Vector2(925, 377)
-
-[node name="exp_orb10" parent="." unique_id=752708250 instance=ExtResource("4_k0juu")]
-position = Vector2(980, 346)
-
-[node name="bullet4" parent="." unique_id=1481968050 instance=ExtResource("3_4wyf3")]
-position = Vector2(380, 194)
-
-[node name="bullet5" parent="." unique_id=827484077 instance=ExtResource("3_4wyf3")]
-position = Vector2(520, 150)
-
-[node name="bullet6" parent="." unique_id=1321955863 instance=ExtResource("3_4wyf3")]
-position = Vector2(341, 130)
-
-[node name="bullet7" parent="." unique_id=1701450984 instance=ExtResource("3_4wyf3")]
-position = Vector2(380, 143)
-
-[node name="bullet8" parent="." unique_id=13806254 instance=ExtResource("3_4wyf3")]
-position = Vector2(315, 173)
-
-[node name="bullet9" parent="." unique_id=1472976353 instance=ExtResource("3_4wyf3")]
-position = Vector2(446, 162)
-
-[node name="bullet10" parent="." unique_id=1526508668 instance=ExtResource("3_4wyf3")]
-position = Vector2(407, 108)
-
-[node name="House" parent="." unique_id=756055608 instance=ExtResource("5_71j4m")]
+[node name="House" parent="." unique_id=650966603 instance=ExtResource("5_71j4m")]
 position = Vector2(2787, 423.99997)
 rotation = -0.07679449
 
-[node name="House2" parent="." unique_id=2146214234 instance=ExtResource("5_71j4m")]
+[node name="House2" parent="." unique_id=834967586 instance=ExtResource("5_71j4m")]
 position = Vector2(5296, 587)
 rotation = 0.24783675
 
-[node name="House3" parent="." unique_id=1859510680 instance=ExtResource("5_71j4m")]
+[node name="House3" parent="." unique_id=1706283443 instance=ExtResource("5_71j4m")]
 position = Vector2(4839, 3151.9995)
 rotation = 1.7680185
 scale = Vector2(1.5, 1.5)
 
-[node name="House4" parent="." unique_id=910908882 instance=ExtResource("5_71j4m")]
+[node name="House4" parent="." unique_id=991244336 instance=ExtResource("5_71j4m")]
 position = Vector2(1188, 2472.0002)
 rotation = -1.9390608
 
-[node name="House5" parent="." unique_id=208265693 instance=ExtResource("5_71j4m")]
+[node name="House5" parent="." unique_id=206399937 instance=ExtResource("5_71j4m")]
 position = Vector2(1684.0002, 4804)
 rotation = -3.0246556
 scale = Vector2(0.75, 0.75)
 
-[node name="House6" parent="." unique_id=1401560297 instance=ExtResource("5_71j4m")]
+[node name="House6" parent="." unique_id=724007558 instance=ExtResource("5_71j4m")]
 position = Vector2(3706, 5133)
 rotation = 3.1415927
 
-[node name="BarrelSpawner" parent="." unique_id=1473339393 instance=ExtResource("6_qfnet")]
+[node name="BarrelSpawner" parent="." unique_id=420916464 instance=ExtResource("6_qfnet")]
 position = Vector2(2349, 318)
 
-[node name="BarrelSpawner2" parent="." unique_id=1704740958 instance=ExtResource("6_qfnet")]
+[node name="BarrelSpawner2" parent="." unique_id=908194022 instance=ExtResource("6_qfnet")]
 position = Vector2(3210, 223)
 
-[node name="BarrelSpawner3" parent="." unique_id=1534801914 instance=ExtResource("6_qfnet")]
+[node name="BarrelSpawner3" parent="." unique_id=41731044 instance=ExtResource("6_qfnet")]
 position = Vector2(4895, 346)
 
-[node name="BarrelSpawner4" parent="." unique_id=1471844475 instance=ExtResource("6_qfnet")]
+[node name="BarrelSpawner4" parent="." unique_id=1459052559 instance=ExtResource("6_qfnet")]
 position = Vector2(5471, 686)
 
-[node name="BarrelSpawner5" parent="." unique_id=1738072619 instance=ExtResource("6_qfnet")]
+[node name="BarrelSpawner5" parent="." unique_id=2060358256 instance=ExtResource("6_qfnet")]
 position = Vector2(4791, 2377)
 
-[node name="BarrelSpawner6" parent="." unique_id=59218936 instance=ExtResource("6_qfnet")]
+[node name="BarrelSpawner6" parent="." unique_id=229969041 instance=ExtResource("6_qfnet")]
 position = Vector2(5149, 2962)
 
-[node name="BarrelSpawner7" parent="." unique_id=1683619981 instance=ExtResource("6_qfnet")]
+[node name="BarrelSpawner7" parent="." unique_id=2089657846 instance=ExtResource("6_qfnet")]
 position = Vector2(4898, 3810)
 
-[node name="bullet11" parent="." unique_id=555084692 instance=ExtResource("3_4wyf3")]
-position = Vector2(1387, 4781)
-
-[node name="BarrelSpawner8" parent="." unique_id=964679359 instance=ExtResource("6_qfnet")]
+[node name="BarrelSpawner8" parent="." unique_id=753494788 instance=ExtResource("6_qfnet")]
 position = Vector2(3247, 5029)
 
-[node name="BarrelSpawner9" parent="." unique_id=564288309 instance=ExtResource("6_qfnet")]
+[node name="BarrelSpawner9" parent="." unique_id=1589717080 instance=ExtResource("6_qfnet")]
 position = Vector2(4080, 5256)
 
-[node name="BarrelSpawner10" parent="." unique_id=1094971182 instance=ExtResource("6_qfnet")]
+[node name="BarrelSpawner10" parent="." unique_id=1739745079 instance=ExtResource("6_qfnet")]
 position = Vector2(1283, 2809)
 
-[node name="BarrelSpawner11" parent="." unique_id=1861061648 instance=ExtResource("6_qfnet")]
+[node name="BarrelSpawner11" parent="." unique_id=835776107 instance=ExtResource("6_qfnet")]
 position = Vector2(1115, 2089)
 
-[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=62896617]
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=295897962]
 color = Color(0.54708964, 0.39280286, 0.7615697, 1)

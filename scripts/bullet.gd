@@ -23,7 +23,7 @@ func _physics_process(delta):
 			global_position += velocity
 			return
 		
-		if body.has_method("take_damage"):
+		if multiplayer.is_server() and body.has_method("take_damage"):
 			body.take_damage(damage)
 			
 		queue_free()

@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://w8v7orqhl3a8"]
+[gd_scene load_steps=8 format=3 uid="uid://w8v7orqhl3a8"]
 
 [ext_resource type="Texture2D" uid="uid://cejp8dvj8jd0n" path="res://assets/shark.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://c4oel2ny4rhjr" path="res://scripts/player.gd" id="1_qhqgy"]
@@ -14,22 +14,48 @@ bg_color = Color(1, 0.33405825, 0.34729666, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qlg0r"]
 bg_color = Color(6.738305e-07, 0.72145563, 0.30494708, 1)
 
-[node name="player" type="CharacterBody2D" unique_id=264071443]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mp"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:velocity")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("gun_pivot1:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("gun_pivot2:rotation")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("gun_pivot2:visible")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+properties/5/path = NodePath(".:current_class")
+properties/5/spawn = true
+properties/5/replication_mode = 2
+properties/6/path = NodePath("shark:flip_h")
+properties/6/spawn = true
+properties/6/replication_mode = 2
+properties/7/path = NodePath("shark:flip_v")
+properties/7/spawn = true
+properties/7/replication_mode = 2
+
+[node name="player" type="CharacterBody2D"]
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_qhqgy")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=613283130]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_g2els")
 
-[node name="shark" type="Sprite2D" parent="." unique_id=210942107]
+[node name="shark" type="Sprite2D" parent="."]
 texture = ExtResource("1_3vyb7")
 flip_h = true
 region_enabled = true
 region_rect = Rect2(64, 141, 372, 218)
 
-[node name="gun_pivot1" type="Node2D" parent="." unique_id=781660255]
+[node name="gun_pivot1" type="Node2D" parent="."]
 
-[node name="tank" type="Sprite2D" parent="gun_pivot1" unique_id=1673473842]
+[node name="tank" type="Sprite2D" parent="gun_pivot1"]
 z_index = 1
 position = Vector2(200, 0)
 texture = ExtResource("3_dqkch")
@@ -37,18 +63,18 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(57, 118, 167, 57)
 
-[node name="Marker2D" type="Marker2D" parent="gun_pivot1" unique_id=232817150]
+[node name="Marker2D" type="Marker2D" parent="gun_pivot1"]
 position = Vector2(185, -1)
 
-[node name="PointLight2D" type="PointLight2D" parent="gun_pivot1" unique_id=536195904]
+[node name="PointLight2D" type="PointLight2D" parent="gun_pivot1"]
 rotation = 4.712389
 scale = Vector2(3.294925, 4.402765)
 shadow_enabled = true
 texture = ExtResource("5_qlg0r")
 
-[node name="gun_pivot2" type="Node2D" parent="." unique_id=1856916027]
+[node name="gun_pivot2" type="Node2D" parent="."]
 
-[node name="tank" type="Sprite2D" parent="gun_pivot2" unique_id=306883023]
+[node name="tank" type="Sprite2D" parent="gun_pivot2"]
 z_index = 1
 position = Vector2(200, 0)
 texture = ExtResource("3_dqkch")
@@ -56,17 +82,17 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(57, 118, 167, 57)
 
-[node name="Marker2D" type="Marker2D" parent="gun_pivot2" unique_id=1306773893]
+[node name="Marker2D" type="Marker2D" parent="gun_pivot2"]
 position = Vector2(200, -1)
 
-[node name="PointLight2D" type="PointLight2D" parent="gun_pivot2" unique_id=1978698267]
+[node name="PointLight2D" type="PointLight2D" parent="gun_pivot2"]
 position = Vector2(670, -6)
 rotation = 4.712389
 scale = Vector2(3.294925, 4.4469476)
 shadow_enabled = true
 texture = ExtResource("5_qlg0r")
 
-[node name="health" type="ProgressBar" parent="." unique_id=573946268]
+[node name="health" type="ProgressBar" parent="."]
 offset_left = -124.0
 offset_top = 118.0
 offset_right = 126.0
@@ -77,3 +103,10 @@ max_value = 10.0
 step = 1.0
 show_percentage = false
 metadata/_edit_use_anchors_ = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.6, 0.6)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_mp")
+replication_interval = 0.05

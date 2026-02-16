@@ -11,6 +11,7 @@ const HOUSE_HALF_WIDTH = 700.0  # 640 + walls + buffer
 const HOUSE_HALF_HEIGHT = 380.0 # 320 + walls + buffer
 
 func _ready() -> void:
+	seed(Network.map_seed)
 	spawn_random_walls()
 	spawn_random_mines()
 
@@ -42,9 +43,6 @@ func spawn_random_walls():
 			walls_spawned += 1
 
 func _get_player_pos() -> Vector2:
-	var player = get_node_or_null("../player")
-	if player:
-		return player.global_position
 	return Vector2(540, 272)
 
 func _find_houses() -> Array:

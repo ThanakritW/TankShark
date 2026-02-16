@@ -6,13 +6,15 @@ extends Node2D
 @export var spawn_radius: float = 150.0
 
 func _ready() -> void:
-	spawn_barrels()
+	var rng = RandomNumberGenerator.new()
+	rng.seed = Network.map_seed + int(global_position.x * 1000 + global_position.y)
+	spawn_barrels(rng)
 
-func spawn_barrels():
-	var count = randi_range(min_barrels, max_barrels)
-	
+func spawn_barrels(rng: RandomNumberGenerator):
+	var count = rng.randi_range(min_barrels, max_barrels)
+
 	for i in range(count):
-		var offset = Vector2.from_angle(randf() * TAU) * randf_range(0, spawn_radius)
+		var offset = Vector2.from_angle(rng.randf() * TAU) * rng.randf_range(0, spawn_radius)
 		var barrel = barrel_scene.instantiate()
 		barrel.position = offset
 		add_child(barrel)
