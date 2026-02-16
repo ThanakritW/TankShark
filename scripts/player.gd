@@ -65,16 +65,23 @@ func apply_class(class_id: String):
 	# Reset defaults
 	damage_multiplier = 1.0
 	bullet_speed_multiplier = 1.0
+	if gun1: gun1.position = Vector2.ZERO
+	if gun2:
+		gun2.position = Vector2.ZERO
+		gun2.visible = false
+
+	if light:
+		light.texture_scale = 1.0
+		light.energy = 1.0
+		var marker = gun1.get_node("Marker2D")
+		light.position = marker.position
+		var tex_size = light.texture.get_size()
+		light.offset = Vector2(0, tex_size.y / 2)
+
 	match class_id:
 		"basic":
 			shoot_interval = 0.5
 			target_zoom = Vector2(0.6, 0.6)
-			bullet_speed_multiplier = 1.0
-			if gun2: gun2.visible = false
-			if gun1: gun1.position = Vector2.ZERO
-			if light:
-				light.texture_scale = 1.0
-				light.position = Vector2(750, 0)
 		"twin":
 			shoot_interval = 0.2
 			target_zoom = Vector2(0.6, 0.6)
@@ -82,36 +89,34 @@ func apply_class(class_id: String):
 				gun2.visible = true
 				gun2.position = Vector2(0, 15)
 				if light_flank:
-					light_flank.position = Vector2(750, 0)
-					light_flank.texture_scale = 1.0
+					var marker2 = gun2.get_node("Marker2D")
+					light_flank.position = marker2.position
+					var tex_size = light_flank.texture.get_size()
+					light_flank.offset = Vector2(0, tex_size.y / 2)
 			if gun1:
 				gun1.position = Vector2(0, -15)
-				if light:
-					light.texture_scale = 1.0
-					light.energy = 1.0
-					light.position = Vector2(750, 0)
 		"flank":
 			shoot_interval = 0.5
 			target_zoom = Vector2(0.6, 0.6)
 			if gun2:
 				gun2.visible = true
 				if light_flank:
-					light_flank.position = Vector2(750, 0)
-					light_flank.texture_scale = 1.0
-			if light:
-				light.texture_scale = 1.0
-				light.energy = 1.0
-				light.position = Vector2(750, 0)
+					var marker2 = gun2.get_node("Marker2D")
+					light_flank.position = marker2.position
+					var tex_size = light_flank.texture.get_size()
+					light_flank.offset = Vector2(0, tex_size.y / 2)
 		"sniper":
 			shoot_interval = 1.2
 			bullet_speed_multiplier = 2.0
 			damage_multiplier = 3.0
 			target_zoom = Vector2(0.4, 0.4)
-			if gun2: gun2.visible = false
-			if gun1: gun1.position = Vector2.ZERO
 			if light:
 				light.texture_scale = 2.5
-				light.position = Vector2(1500, 0)
+				light.energy = 1.5
+				var marker = gun1.get_node("Marker2D")
+				light.position = marker.position
+				var tex_size = light.texture.get_size()
+				light.offset = Vector2(0, tex_size.y / 2 * 2.5)
 
 func _update_light_visibility():
 	if not is_multiplayer_authority():
