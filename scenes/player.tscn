@@ -75,7 +75,7 @@ offset_right = 126.0
 offset_bottom = 145.0
 theme_override_styles/background = SubResource("StyleBoxFlat_dqkch")
 theme_override_styles/fill = SubResource("StyleBoxFlat_qlg0r")
-max_value = 10.0
+max_value = 30.0
 step = 1.0
 show_percentage = false
 metadata/_edit_use_anchors_ = true
@@ -85,10 +85,10 @@ offset_left = -60.0
 offset_top = -150.0
 offset_right = 60.0
 offset_bottom = -110.0
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 72
 text = "lv 1"
 horizontal_alignment = 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.6, 0.6)
+zoom = Vector2(0.8, 0.8)
 

@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://lobby001"]
 
-[ext_resource type="Script" path="res://scripts/lobby.gd" id="1"]
+[ext_resource type="Script" uid="uid://6hlejifny226" path="res://scripts/lobby.gd" id="1"]
 
-[node name="Lobby" type="Control"]
+[node name="Lobby" type="Control" unique_id=1012844725]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=857641096]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -25,46 +25,46 @@ offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Title" type="Label" parent="VBoxContainer"]
+[node name="Title" type="Label" parent="VBoxContainer" unique_id=1669688885]
 layout_mode = 2
 text = "TankShark Multiplayer"
 horizontal_alignment = 1
 
-[node name="ConnectionRow" type="HBoxContainer" parent="VBoxContainer"]
+[node name="ConnectionRow" type="HBoxContainer" parent="VBoxContainer" unique_id=1814546890]
 layout_mode = 2
 
-[node name="AddressInput" type="LineEdit" parent="VBoxContainer/ConnectionRow"]
+[node name="AddressInput" type="LineEdit" parent="VBoxContainer/ConnectionRow" unique_id=2027941456]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "127.0.0.1"
 
-[node name="PortInput" type="SpinBox" parent="VBoxContainer/ConnectionRow"]
+[node name="PortInput" type="SpinBox" parent="VBoxContainer/ConnectionRow" unique_id=2096481869]
 layout_mode = 2
 min_value = 1024.0
 max_value = 65535.0
 value = 9999.0
 
-[node name="ButtonRow" type="HBoxContainer" parent="VBoxContainer"]
+[node name="ButtonRow" type="HBoxContainer" parent="VBoxContainer" unique_id=1799952955]
 layout_mode = 2
 
-[node name="HostBtn" type="Button" parent="VBoxContainer/ButtonRow"]
+[node name="HostBtn" type="Button" parent="VBoxContainer/ButtonRow" unique_id=2000522576]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Host Game"
 
-[node name="JoinBtn" type="Button" parent="VBoxContainer/ButtonRow"]
+[node name="JoinBtn" type="Button" parent="VBoxContainer/ButtonRow" unique_id=977702488]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Join Game"
 
-[node name="StatusLabel" type="Label" parent="VBoxContainer"]
+[node name="StatusLabel" type="Label" parent="VBoxContainer" unique_id=1505125555]
 layout_mode = 2
 text = "Enter address and host or join."
 horizontal_alignment = 1
 
-[node name="PlayerList" type="VBoxContainer" parent="VBoxContainer"]
+[node name="PlayerList" type="VBoxContainer" parent="VBoxContainer" unique_id=1232650482]
 layout_mode = 2
 
-[node name="StartBtn" type="Button" parent="VBoxContainer"]
+[node name="StartBtn" type="Button" parent="VBoxContainer" unique_id=662649423]
 layout_mode = 2
 text = "Start Game"

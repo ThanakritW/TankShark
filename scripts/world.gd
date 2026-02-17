@@ -128,14 +128,15 @@ func _sync_remove_orb_rpc(orb_path_str: String):
 # --- Player Bomb Sync ---
 var player_bomb_scene = preload("res://scenes/player_bomb.tscn")
 
-func sync_place_player_bomb(bomb_name: String, pos: Vector2, peer_id: int):
-	_sync_place_bomb_rpc.rpc(bomb_name, pos, peer_id)
+func sync_throw_player_bomb(bomb_name: String, pos: Vector2, dir: Vector2, peer_id: int):
+	_sync_throw_bomb_rpc.rpc(bomb_name, pos, dir, peer_id)
 
 @rpc("authority", "call_local", "reliable")
-func _sync_place_bomb_rpc(bomb_name: String, pos: Vector2, peer_id: int):
+func _sync_throw_bomb_rpc(bomb_name: String, pos: Vector2, dir: Vector2, peer_id: int):
 	var bomb = player_bomb_scene.instantiate()
 	bomb.name = bomb_name
 	bomb.global_position = pos
+	bomb.direction = dir.normalized()
 	bomb.owner_peer_id = peer_id
 	add_child(bomb)
 

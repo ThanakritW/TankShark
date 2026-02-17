@@ -14,11 +14,11 @@ var bullet = preload("res://scenes/bullet.tscn")
 var shoot_interval = 0.5
 var bullet_speed_multiplier = 1.0
 var damage_multiplier = 1.0
-var target_zoom = Vector2(0.6, 0.6)
+var target_zoom = Vector2(0.8, 0.8)
 
 # Game state
-var current_health = 10
-var max_health = 10
+var current_health = 30
+var max_health = 30
 var is_dead = false
 var shooting = false
 var shoot_timer = 0.0
@@ -34,6 +34,7 @@ var gun1: Node2D
 var gun2: Node2D
 var light: PointLight2D
 var light_flank: PointLight2D
+var self_light: PointLight2D
 var exp_bar: Node
 var lv_label: Label
 
@@ -53,6 +54,7 @@ func _ready():
 	else:
 		if cam: cam.enabled = false
 	apply_class("basic")
+	_setup_self_light()
 	_update_light_visibility()
 
 func refresh_nodes():
@@ -87,10 +89,10 @@ func apply_class(class_id: String):
 	match class_id:
 		"basic":
 			shoot_interval = 0.5
-			target_zoom = Vector2(0.6, 0.6)
+			target_zoom = Vector2(0.8, 0.8)
 		"twin":
 			shoot_interval = 0.2
-			target_zoom = Vector2(0.6, 0.6)
+			target_zoom = Vector2(0.8, 0.8)
 			if gun2:
 				gun2.visible = true
 				gun2.position = Vector2(0, 15)
@@ -103,7 +105,7 @@ func apply_class(class_id: String):
 				gun1.position = Vector2(0, -15)
 		"flank":
 			shoot_interval = 0.5
-			target_zoom = Vector2(0.6, 0.6)
+			target_zoom = Vector2(0.8, 0.8)
 			if gun2:
 				gun2.visible = true
 				if light_flank:
@@ -115,7 +117,7 @@ func apply_class(class_id: String):
 			shoot_interval = 1.2
 			bullet_speed_multiplier = 2.0
 			damage_multiplier = 3.0
-			target_zoom = Vector2(0.4, 0.4)
+			target_zoom = Vector2(0.55, 0.55)
 			if light:
 				light.texture_scale = 2.5
 				light.energy = 1.5
@@ -124,13 +126,33 @@ func apply_class(class_id: String):
 				var tex_size = light.texture.get_size()
 				light.offset = Vector2(0, tex_size.y / 2 * 2.5)
 
+func _setup_self_light():
+	self_light = PointLight2D.new()
+	self_light.name = "SelfLight"
+	var gradient = Gradient.new()
+	gradient.set_color(0, Color(1, 1, 0.9))
+	gradient.set_color(1, Color(1, 1, 0.9, 0))
+	var tex = GradientTexture2D.new()
+	tex.gradient = gradient
+	tex.fill = GradientTexture2D.FILL_RADIAL
+	tex.fill_from = Vector2(0.5, 0.5)
+	tex.fill_to = Vector2(0.5, 0.0)
+	tex.width = 256
+	tex.height = 256
+	self_light.texture = tex
+	self_light.texture_scale = 2.0
+	self_light.energy = 0.6
+	add_child(self_light)
+
 func _update_light_visibility():
 	if not is_multiplayer_authority():
 		if light: light.visible = false
 		if light_flank: light_flank.visible = false
+		if self_light: self_light.visible = false
 	else:
 		if light: light.visible = true
 		if light_flank: light_flank.visible = true
+		if self_light: self_light.visible = true
 
 func _physics_process(delta):
 	if is_multiplayer_authority():
@@ -179,7 +201,8 @@ func _input(event):
 
 	if event is InputEventKey and event.pressed and event.keycode == KEY_TAB:
 		if bomb_cooldown <= 0:
-			_request_place_bomb.rpc_id(1, global_position)
+			var aim_dir = Vector2.from_angle(gun1.global_rotation) if gun1 else Vector2.RIGHT
+			_request_throw_bomb.rpc_id(1, global_position, aim_dir)
 			bomb_cooldown = BOMB_COOLDOWN_TIME
 
 # --- Class Swap RPCs ---
@@ -319,9 +342,9 @@ func _update_lv_label():
 	if lv_label:
 		lv_label.text = "lv " + str(level)
 
-# --- Player Bomb Placement ---
+# --- Player Bomb Throw ---
 @rpc("any_peer", "reliable")
-func _request_place_bomb(pos: Vector2):
+func _request_throw_bomb(pos: Vector2, dir: Vector2):
 	if not multiplayer.is_server(): return
 	var sender = multiplayer.get_remote_sender_id()
 	if sender != get_multiplayer_authority(): return
@@ -329,5 +352,5 @@ func _request_place_bomb(pos: Vector2):
 	bomb_counter += 1
 	var bomb_name = "pbomb_" + str(sender) + "_" + str(bomb_counter)
 	var world = get_tree().current_scene
-	if world and world.has_method("sync_place_player_bomb"):
-		world.sync_place_player_bomb(bomb_name, pos, sender)
+	if world and world.has_method("sync_throw_player_bomb"):
+		world.sync_throw_player_bomb(bomb_name, pos, dir, sender)
