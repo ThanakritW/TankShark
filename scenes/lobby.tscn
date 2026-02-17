@@ -36,7 +36,7 @@ layout_mode = 2
 [node name="AddressInput" type="LineEdit" parent="VBoxContainer/ConnectionRow" unique_id=2027941456]
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "127.0.0.1"
+placeholder_text = "136.110.63.226"
 
 [node name="PortInput" type="SpinBox" parent="VBoxContainer/ConnectionRow" unique_id=2096481869]
 layout_mode = 2

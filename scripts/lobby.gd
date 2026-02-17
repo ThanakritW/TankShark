@@ -29,7 +29,7 @@ func _on_host_pressed():
 func _on_join_pressed():
 	var address = address_input.text
 	if address.is_empty():
-		address = "127.0.0.1"
+		address = "136.110.63.226"
 	var port = int(port_input.value)
 	Network.join_game(address, port)
 	status_label.text = "Connecting..."
