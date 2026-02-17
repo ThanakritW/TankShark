@@ -21,12 +21,12 @@ const MAP_CENTER = Vector2(3200, 3200)
 const ZONE_START_RADIUS = 5000.0
 const ZONE_MIN_RADIUS = 100.0
 const ZONE_SHRINK_AMOUNT = 150.0
-const ZONE_SHRINK_INTERVAL = 3.0
+const ZONE_SHRINK_INTERVAL = 5.0
 const ZONE_DAMAGE = 2
 const ZONE_DAMAGE_INTERVAL = 1.0
 
 var zone_radius: float = ZONE_START_RADIUS
-var zone_shrink_timer: float = ZONE_SHRINK_INTERVAL
+var zone_shrink_timer: float = ZONE_SHRINK_INTERVAL + 20.0
 var zone_damage_timer: float = ZONE_DAMAGE_INTERVAL
 
 func _ready():
@@ -237,6 +237,21 @@ func _sync_remove_orb_rpc(orb_path_str: String):
 	var orb = get_node_or_null(orb_path_str)
 	if orb:
 		orb.queue_free()
+
+# --- Death EXP Orb Sync ---
+var exp_orb_scene = preload("res://scenes/exp_orb.tscn")
+
+func sync_spawn_death_orbs(orbs: Array):
+	_sync_spawn_death_orbs_rpc.rpc(orbs)
+
+@rpc("authority", "call_local", "reliable")
+func _sync_spawn_death_orbs_rpc(orbs: Array):
+	for orb_data in orbs:
+		var exp_orb = exp_orb_scene.instantiate()
+		exp_orb.exp_amount = orb_data["exp"]
+		exp_orb.global_position = orb_data["pos"]
+		exp_orb.name = orb_data["name"]
+		call_deferred("add_child", exp_orb)
 
 # --- Player Bomb Sync ---
 var player_bomb_scene = preload("res://scenes/player_bomb.tscn")

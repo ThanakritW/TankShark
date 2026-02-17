@@ -10,6 +10,7 @@ func _ready():
 
 func _on_body_entered(body):
 	if not multiplayer.is_server(): return
+	if "is_dead" in body and body.is_dead: return
 	if body.has_method("gain_exp"):
 		body.gain_exp(exp_amount)
 		var world = get_tree().current_scene

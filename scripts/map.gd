@@ -4,6 +4,8 @@ extends Node2D
 @export var num_walls : int = 125
 @export var mine_scene : PackedScene = preload("res://scenes/navel_mine.tscn")
 @export var num_mines : int = 30
+@export var barrel_scene : PackedScene = preload("res://scenes/barrel.tscn")
+@export var num_barrels : int = 25
 @export var map_size : Vector2 = Vector2(6400, 6400)
 @export var player_safe_radius : float = 400.0
 
@@ -14,6 +16,7 @@ func _ready() -> void:
 	seed(Network.map_seed)
 	spawn_random_walls()
 	spawn_random_mines()
+	spawn_random_barrels()
 
 func spawn_random_walls():
 	var player_pos = _get_player_pos()
@@ -128,3 +131,28 @@ func _spawn_mine(pos: Vector2, index: int):
 	mine.name = "mine_" + str(index)
 	mine.position = pos
 	add_child(mine)
+
+func spawn_random_barrels():
+	var player_pos = _get_player_pos()
+	var houses = _find_houses()
+
+	var barrels_spawned = 0
+	var max_attempts = num_barrels * 20
+	var attempts = 0
+
+	while barrels_spawned < num_barrels and attempts < max_attempts:
+		attempts += 1
+		var pos = Vector2(
+			randf_range(100, map_size.x - 100),
+			randf_range(100, map_size.y - 100)
+		)
+		var barrel_radius = 60.0
+		if _is_valid_spawn(pos, barrel_radius, player_pos, houses):
+			_spawn_barrel(pos, barrels_spawned)
+			barrels_spawned += 1
+
+func _spawn_barrel(pos: Vector2, index: int):
+	var barrel = barrel_scene.instantiate()
+	barrel.name = "rbarrel_" + str(index)
+	barrel.position = pos
+	add_child(barrel)
