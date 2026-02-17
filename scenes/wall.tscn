@@ -1,16 +1,22 @@
 [gd_scene format=3 uid="uid://cwallsceneid"]
 
-[ext_resource type="Texture2D" path="res://assets/plank_texture.jpg" id="Texture2D_plank"]
+[ext_resource type="Texture2D" uid="uid://b5it2if7hrne2" path="res://assets/plank_texture.jpg" id="Texture2D_plank"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
 size = Vector2(64, 64)
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_wykyb"]
+polygon = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+
 [node name="wall" type="StaticBody2D" unique_id=350192315]
 
 [node name="PlankSurface" type="Polygon2D" parent="." unique_id=1588291160]
+texture = ExtResource("Texture2D_plank")
 polygon = PackedVector2Array(-30, -32, 32, -28, 30, 32, -32, 30)
 uv = PackedVector2Array(0, 0, 64, 0, 64, 64, 0, 64)
-texture = ExtResource("Texture2D_plank")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1273197514]
 shape = SubResource("RectangleShape2D_wall")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=2006477693]
+occluder = SubResource("OccluderPolygon2D_wykyb")
