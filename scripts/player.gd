@@ -31,6 +31,7 @@ var gun2: Node2D
 var light: PointLight2D
 var light_flank: PointLight2D
 var exp_bar: Node
+var lv_label: Label
 
 func _ready():
 	# Set multiplayer authority based on node name (peer ID)
@@ -54,6 +55,7 @@ func refresh_nodes():
 	cam = get_node_or_null("Camera2D")
 	gun1 = get_node_or_null("gun_pivot1")
 	gun2 = get_node_or_null("gun_pivot2")
+	lv_label = get_node_or_null("lv_label")
 	if gun1: light = gun1.get_node_or_null("PointLight2D")
 	if gun2: light_flank = gun2.get_node_or_null("PointLight2D")
 	if is_multiplayer_authority():
@@ -262,6 +264,23 @@ func _sync_die():
 	is_dead = true
 	shooting = false
 	$shark.flip_v = true
+	# Show game over screen for the local player who died
+	if is_multiplayer_authority():
+		_show_game_over()
+
+func _show_game_over():
+	var game_over_layer = get_tree().root.get_node_or_null("world/GameOverLayer")
+	if game_over_layer:
+		game_over_layer.visible = true
+		var return_btn = game_over_layer.get_node_or_null("Overlay/VBox/ReturnBtn")
+		if return_btn and not return_btn.is_connected("pressed", _on_return_pressed):
+			return_btn.pressed.connect(_on_return_pressed)
+
+func _on_return_pressed():
+	# Disconnect from server and go back to lobby
+	multiplayer.multiplayer_peer = null
+	Network.players.clear()
+	get_tree().change_scene_to_file("res://scenes/lobby.tscn")
 
 func gain_exp(amt):
 	if not multiplayer.is_server(): return
@@ -280,6 +299,11 @@ func _sync_exp(exp_val: int, lvl: int, max_exp: int):
 	experience = exp_val
 	level = lvl
 	max_experience = max_exp
+	_update_lv_label()
 	if is_multiplayer_authority() and exp_bar:
 		exp_bar.max_value = max_experience
 		exp_bar.value = experience
+
+func _update_lv_label():
+	if lv_label:
+		lv_label.text = "lv " + str(level)

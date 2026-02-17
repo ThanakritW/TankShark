@@ -66,6 +66,11 @@ func _on_peer_disconnected(id: int):
 	player_disconnected.emit(id)
 	if is_dedicated_server:
 		print("[Server] Player " + str(id) + " disconnected (" + str(players.size()) + " players)")
+		# Reset game state when all players leave
+		if players.size() == 0:
+			print("[Server] All players left, resetting game state...")
+			map_seed = randi()
+			get_tree().call_deferred("reload_current_scene")
 
 func _on_connected_to_server():
 	players[multiplayer.get_unique_id()] = {"name": "Me"}

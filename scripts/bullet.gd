@@ -5,27 +5,33 @@ extends Area2D
 
 var direction: Vector2 = Vector2.RIGHT
 var owner_shooter = null
+var lifetime := 3.0
 
 @onready var shape_cast = $ShapeCast2D
 
 func _physics_process(delta):
+	# Despawn after lifetime expires (prevents memory leak)
+	lifetime -= delta
+	if lifetime <= 0:
+		queue_free()
+		return
+
 	var velocity = direction * speed * delta
-	
+
 	shape_cast.target_position = to_local(global_position + velocity)
 	shape_cast.force_shapecast_update()
-	
+
 	if shape_cast.is_colliding():
-		# Hit something
 		var body = shape_cast.get_collider(0)
-		
+
 		# Don't hit the shooter
 		if body == owner_shooter:
 			global_position += velocity
 			return
-		
+
 		if multiplayer.is_server() and body.has_method("take_damage"):
 			body.take_damage(damage)
-			
+
 		queue_free()
 	else:
 		global_position += velocity

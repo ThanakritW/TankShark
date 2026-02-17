@@ -22,24 +22,24 @@ func spawn_random_walls():
 	var walls_spawned = 0
 	var max_attempts = num_walls * 20
 	var attempts = 0
-	
+
 	while walls_spawned < num_walls and attempts < max_attempts:
 		attempts += 1
-		
+
 		# Generate random position
 		var pos = Vector2(
 			randf_range(100, map_size.x - 100),
 			randf_range(100, map_size.y - 100)
 		)
-		
+
 		# Random wall scale (used for collision size estimation)
 		var long_side = randf_range(3.0, 6.0)   # Make this number big for length
 		var short_side = randf_range(0.5, 1.0)  # Make this number small for thickness
 		var wall_scale = Vector2(long_side, short_side)
 		var wall_size_radius = 50.0 * max(wall_scale.x, wall_scale.y)
-		
+
 		if _is_valid_spawn(pos, wall_size_radius, player_pos, houses):
-			_spawn_wall(pos, wall_scale)
+			_spawn_wall(pos, wall_scale, walls_spawned)
 			walls_spawned += 1
 
 func _get_player_pos() -> Vector2:
@@ -91,8 +91,9 @@ func _is_valid_spawn(pos: Vector2, wall_radius_buffer: float, player_pos: Vector
 			
 	return true
 
-func _spawn_wall(pos: Vector2, wall_scale: Vector2):
+func _spawn_wall(pos: Vector2, wall_scale: Vector2, index: int):
 	var wall = wall_scene.instantiate()
+	wall.name = "wall_" + str(index)
 	wall.position = pos
 	wall.rotation = randf_range(0, PI)
 	wall.scale = wall_scale
@@ -101,28 +102,29 @@ func _spawn_wall(pos: Vector2, wall_scale: Vector2):
 func spawn_random_mines():
 	var player_pos = _get_player_pos()
 	var houses = _find_houses()
-	
+
 	var mines_spawned = 0
 	var max_attempts = num_mines * 20
 	var attempts = 0
-	
+
 	while mines_spawned < num_mines and attempts < max_attempts:
 		attempts += 1
-		
+
 		# Generate random position
 		var pos = Vector2(
 			randf_range(100, map_size.x - 100),
 			randf_range(100, map_size.y - 100)
 		)
-		
+
 		# Mines have a fixed size, approximate collision radius
 		var mine_radius = 50.0
-		
+
 		if _is_valid_spawn(pos, mine_radius, player_pos, houses):
-			_spawn_mine(pos)
+			_spawn_mine(pos, mines_spawned)
 			mines_spawned += 1
 
-func _spawn_mine(pos: Vector2):
+func _spawn_mine(pos: Vector2, index: int):
 	var mine = mine_scene.instantiate()
+	mine.name = "mine_" + str(index)
 	mine.position = pos
 	add_child(mine)

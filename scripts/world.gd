@@ -10,6 +10,8 @@ const SPAWN_POINTS = [
 @onready var players_node = $Players
 
 var spawned_peers: Dictionary = {}
+var destroyed_barrels: Array = []
+var destroyed_mines: Array = []
 
 func _ready():
 	if multiplayer.is_server():
@@ -32,11 +34,26 @@ func _client_ready():
 		var spawn_index = Network.players.keys().find(peer_id) % SPAWN_POINTS.size()
 		_spawn_player_on_client.rpc_id(sender, peer_id, SPAWN_POINTS[spawn_index])
 
+	# Sync destroyed barrels and mines to the new client
+	_sync_destroyed_objects.rpc_id(sender, destroyed_barrels, destroyed_mines)
+
 	# Now spawn the new player on server + broadcast to ALL clients
 	var spawn_index = Network.players.keys().find(sender) % SPAWN_POINTS.size()
 	spawned_peers[sender] = true
 	_spawn_player_local(sender, SPAWN_POINTS[spawn_index])
 	_spawn_player_on_client.rpc(sender, SPAWN_POINTS[spawn_index])
+
+@rpc("authority", "reliable")
+func _sync_destroyed_objects(barrel_paths: Array, mine_paths: Array):
+	# Remove all destroyed barrels and mines that were destroyed before we joined
+	for path_str in barrel_paths:
+		var barrel = get_node_or_null(path_str)
+		if barrel:
+			barrel.queue_free()
+	for path_str in mine_paths:
+		var mine = get_node_or_null(path_str)
+		if mine:
+			mine.queue_free()
 
 @rpc("authority", "reliable")
 func _spawn_player_on_client(peer_id: int, pos: Vector2):
@@ -69,7 +86,9 @@ func _remove_player_on_client(peer_id: int):
 # --- Sync for map objects (not managed by MultiplayerSpawner, so RPCs on them don't work) ---
 
 func explode_mine_at_path(mine_path: NodePath):
-	_sync_mine_explode.rpc(str(mine_path))
+	var path_str = str(mine_path)
+	destroyed_mines.append(path_str)
+	_sync_mine_explode.rpc(path_str)
 
 @rpc("authority", "call_local", "reliable")
 func _sync_mine_explode(mine_path_str: String):
@@ -87,7 +106,9 @@ func _sync_barrel_damage_rpc(barrel_path_str: String, hp: int):
 		barrel.apply_damage_visual(hp)
 
 func sync_barrel_die(barrel_path: NodePath, orbs: Array):
-	_sync_barrel_die_rpc.rpc(str(barrel_path), orbs)
+	var path_str = str(barrel_path)
+	destroyed_barrels.append(path_str)
+	_sync_barrel_die_rpc.rpc(path_str, orbs)
 
 @rpc("authority", "call_local", "reliable")
 func _sync_barrel_die_rpc(barrel_path_str: String, orbs: Array):

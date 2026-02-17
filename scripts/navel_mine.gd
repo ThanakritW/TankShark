@@ -10,6 +10,7 @@ var triggered := false
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
+	area_entered.connect(_on_area_entered)
 	if animated_sprite:
 		animated_sprite.animation_finished.connect(_on_animation_finished)
 		animated_sprite.play("idle")
@@ -20,7 +21,17 @@ func _on_body_entered(body: Node) -> void:
 	triggered = true
 	if body.has_method("take_damage"):
 		body.take_damage(damage)
-	# Use world script to broadcast mine explosion by path (mines aren't spawner-managed)
+	_trigger_explode()
+
+func _on_area_entered(area: Area2D) -> void:
+	if not multiplayer.is_server(): return
+	if triggered: return
+	# Bullet hit the mine — explode without dealing damage to a player
+	triggered = true
+	area.queue_free()  # Destroy the bullet
+	_trigger_explode()
+
+func _trigger_explode():
 	var world = get_tree().current_scene
 	if world and world.has_method("explode_mine_at_path"):
 		world.explode_mine_at_path(get_path())
