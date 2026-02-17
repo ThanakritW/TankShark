@@ -103,16 +103,18 @@ At level 5, players choose one of three class upgrades:
 
 ## Network Architecture
 
-### Server-Authoritative Model
-- **Server controls all game state:** health, damage, XP, zone, win conditions
-- **Clients only send inputs:** move direction, shoot request, bomb throw request
-- **Clients receive results to display** — prevents cheating
+### Client-Server Model
+- One dedicated server, multiple clients connect via WebSocket
+- **Server-authoritative** — the server controls all game state: health, damage, XP, zone shrinking, win conditions. Clients cannot cheat because they don't decide outcomes.
 
-### RPC Communication
+### RPC (Remote Procedure Call)
 All communication uses Godot's built-in `@rpc` annotations:
-- **Unreliable RPCs** — Position/velocity/rotation (frequent updates, tolerate data loss)
-- **Reliable RPCs** — Damage, XP, deaths, upgrades, bomb throws (critical state)
-- **`call_local`** — Server also applies the RPC to itself
+- **`"any_peer"`** — any client can call (e.g., requesting to shoot)
+- **`"authority"`** — only the server can call (e.g., syncing health, announcing winner)
+- **`"call_local"`** — also executes on the caller, not just the remote
+- **`"reliable"`** — guaranteed delivery (TCP-like), used for important events
+
+**Flow:** Client presses a key → sends RPC to server → server validates & processes → server broadcasts result to all clients via RPC
 
 ### Deterministic Map Generation
 - Server generates a random `map_seed` and sends it to all clients
