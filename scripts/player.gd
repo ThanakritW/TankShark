@@ -327,6 +327,7 @@ func _create_bullet_local(pivot):
 # --- Damage / Health / XP (server-authoritative, synced via RPC) ---
 func take_damage(amount):
 	if not multiplayer.is_server(): return
+	if is_dead: return
 	current_health -= amount
 	_sync_health.rpc(current_health)
 	if current_health <= 0:
