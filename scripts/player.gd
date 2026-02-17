@@ -298,23 +298,11 @@ func _sync_die():
 	is_dead = true
 	shooting = false
 	$shark.flip_v = true
-	# Show game over screen for the local player who died
-	if is_multiplayer_authority():
-		_show_game_over()
-
-func _show_game_over():
-	var game_over_layer = get_tree().root.get_node_or_null("world/GameOverLayer")
-	if game_over_layer:
-		game_over_layer.visible = true
-		var return_btn = game_over_layer.get_node_or_null("Overlay/VBox/ReturnBtn")
-		if return_btn and not return_btn.is_connected("pressed", _on_return_pressed):
-			return_btn.pressed.connect(_on_return_pressed)
-
-func _on_return_pressed():
-	# Disconnect from server and go back to lobby
-	multiplayer.multiplayer_peer = null
-	Network.players.clear()
-	get_tree().change_scene_to_file("res://scenes/lobby.tscn")
+	# Server checks if there's a winner after this death
+	if multiplayer.is_server():
+		var world = get_tree().current_scene
+		if world and world.has_method("_check_winner"):
+			world.call_deferred("_check_winner")
 
 func gain_exp(amt):
 	if not multiplayer.is_server(): return

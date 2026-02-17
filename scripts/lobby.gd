@@ -32,18 +32,21 @@ func _on_join_pressed():
 		address = "127.0.0.1"
 	var port = int(port_input.value)
 	Network.join_game(address, port)
-	status_label.text = "Connecting to " + address + ":" + str(port) + "..."
+	status_label.text = "Connecting..."
 	host_btn.disabled = true
 	join_btn.disabled = true
-	# Wait a moment then switch to world (dedicated server is already running)
 	_wait_for_connection()
 
 func _wait_for_connection():
-	# Give time for connection, then check if we connected to a dedicated server
 	await get_tree().create_timer(2.0).timeout
 	if multiplayer.has_multiplayer_peer() and multiplayer.get_unique_id() != 1:
-		# We're a client connected to a server - go to game
-		get_tree().change_scene_to_file("res://scenes/world.tscn")
+		# Connected to dedicated server — show waiting status
+		status_label.text = "Waiting for players..."
+	elif not multiplayer.has_multiplayer_peer():
+		# Connection was rejected (room full)
+		status_label.text = "Room full! Game in progress."
+		host_btn.disabled = false
+		join_btn.disabled = false
 
 func _on_start_pressed():
 	Network.start_game.rpc(Network.map_seed)
@@ -53,11 +56,11 @@ func _on_server_started():
 	start_btn.visible = true
 
 func _on_player_connected(_id: int):
-	status_label.text = str(Network.players.size()) + " player(s) connected"
+	status_label.text = str(Network.players.size()) + "/" + str(Network.REQUIRED_PLAYERS) + " players connected"
 	_update_player_list()
 
 func _on_player_disconnected(_id: int):
-	status_label.text = str(Network.players.size()) + " player(s) connected"
+	status_label.text = str(Network.players.size()) + "/" + str(Network.REQUIRED_PLAYERS) + " players connected"
 	_update_player_list()
 
 func _on_connection_failed():
