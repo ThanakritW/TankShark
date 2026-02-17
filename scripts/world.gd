@@ -124,3 +124,35 @@ func _sync_remove_orb_rpc(orb_path_str: String):
 	var orb = get_node_or_null(orb_path_str)
 	if orb:
 		orb.queue_free()
+
+# --- Player Bomb Sync ---
+var player_bomb_scene = preload("res://scenes/player_bomb.tscn")
+
+func sync_place_player_bomb(bomb_name: String, pos: Vector2, peer_id: int):
+	_sync_place_bomb_rpc.rpc(bomb_name, pos, peer_id)
+
+@rpc("authority", "call_local", "reliable")
+func _sync_place_bomb_rpc(bomb_name: String, pos: Vector2, peer_id: int):
+	var bomb = player_bomb_scene.instantiate()
+	bomb.name = bomb_name
+	bomb.global_position = pos
+	bomb.owner_peer_id = peer_id
+	add_child(bomb)
+
+func sync_player_bomb_explode(bomb_path: NodePath):
+	_sync_bomb_explode_rpc.rpc(str(bomb_path))
+
+@rpc("authority", "call_local", "reliable")
+func _sync_bomb_explode_rpc(bomb_path_str: String):
+	var bomb = get_node_or_null(bomb_path_str)
+	if bomb and bomb.has_method("_do_explode"):
+		bomb._do_explode()
+
+func sync_wall_destroy(wall_path: NodePath):
+	_sync_wall_destroy_rpc.rpc(str(wall_path))
+
+@rpc("authority", "call_local", "reliable")
+func _sync_wall_destroy_rpc(wall_path_str: String):
+	var wall = get_node_or_null(wall_path_str)
+	if wall:
+		wall.queue_free()

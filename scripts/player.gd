@@ -23,6 +23,10 @@ var is_dead = false
 var shooting = false
 var shoot_timer = 0.0
 var current_class: String = "basic"
+var bomb_cooldown: float = 0.0
+const BOMB_COOLDOWN_TIME: float = 20.0
+var player_bomb_scene = preload("res://scenes/player_bomb.tscn")
+static var bomb_counter: int = 0
 
 # Nodes
 var cam: Camera2D
@@ -158,6 +162,8 @@ func _process(delta):
 			if shoot_timer <= 0:
 				shoot_tank()
 				shoot_timer = shoot_interval
+		if bomb_cooldown > 0:
+			bomb_cooldown -= delta
 	if has_node("health"): $health.value = current_health
 
 func _input(event):
@@ -170,6 +176,11 @@ func _input(event):
 
 	if event.is_action_pressed("shoot"): shooting = true
 	elif event.is_action_released("shoot"): shooting = false
+
+	if event is InputEventKey and event.pressed and event.keycode == KEY_TAB:
+		if bomb_cooldown <= 0:
+			_request_place_bomb.rpc_id(1, global_position)
+			bomb_cooldown = BOMB_COOLDOWN_TIME
 
 # --- Class Swap RPCs ---
 func _request_class_swap(class_id: String):
@@ -307,3 +318,16 @@ func _sync_exp(exp_val: int, lvl: int, max_exp: int):
 func _update_lv_label():
 	if lv_label:
 		lv_label.text = "lv " + str(level)
+
+# --- Player Bomb Placement ---
+@rpc("any_peer", "reliable")
+func _request_place_bomb(pos: Vector2):
+	if not multiplayer.is_server(): return
+	var sender = multiplayer.get_remote_sender_id()
+	if sender != get_multiplayer_authority(): return
+	if is_dead: return
+	bomb_counter += 1
+	var bomb_name = "pbomb_" + str(sender) + "_" + str(bomb_counter)
+	var world = get_tree().current_scene
+	if world and world.has_method("sync_place_player_bomb"):
+		world.sync_place_player_bomb(bomb_name, pos, sender)
